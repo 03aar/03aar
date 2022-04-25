@@ -1,7 +1,7 @@
 - 👋 Hi, I’m Aaron K
 - 👀 I’m interested in Cybersecuirity 
-- 🌱 I’m currently learning CyberThreat Mitigation
-- 💞️ I’m looking to collaborate with IBM
+- 🌱 I’m currently learning
+- 💞️ I’m looking for nothing
 - 📫 How to reach me mtaaron03@gmail.com
 
 <!---
