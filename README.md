@@ -1,7 +1,6 @@
 - 👋 Hi, I’m Aaron K
-- 👀 I’m interested in Cybersecuirity 
-- 🌱 I’m currently learning
-- 💞️ I’m looking for nothing
+- 👀 I’m an Autodiadtic Programmer
+- 🌱 I Learn New Things
 - 📫 How to reach me mtaaron03@gmail.com
 
 <!---
