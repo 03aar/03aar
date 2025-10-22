@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followw</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Overlay Container -->
+    <div id="app" class="overlay-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="greeting">
+                    <h1 id="greeting-text" class="greeting-title">good morning.</h1>
+                    <p class="greeting-subtitle">let's get back in flow.</p>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <nav class="view-tabs">
+                    <button class="tab-button active" data-view="today">
+                        <svg class="tab-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/></svg>
+                        <span>today</span>
+                    </button>
+                    <button class="tab-button" data-view="tasks">
+                        <svg class="tab-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                        <span>tasks</span>
+                    </button>
+                    <button class="tab-button" data-view="projects">
+                        <svg class="tab-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                        <span>projects</span>
+                    </button>
+                    <button class="tab-button" data-view="analytics">
+                        <svg class="tab-icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/></svg>
+                        <span>analytics</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <button id="close-button" class="close-button">
+                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Today View -->
+            <div id="today-view" class="view active">
+                <!-- Stats Card -->
+                <div class="stats-card card">
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                        <div class="stat-content">
+                            <div class="stat-value" id="today-time">0h</div>
+                            <div class="stat-label">focus time</div>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <div class="stat-content">
+                            <div class="stat-value" id="today-completed">0</div>
+                            <div class="stat-label">completed</div>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <svg class="stat-icon" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                        <div class="stat-content">
+                            <div class="stat-value" id="today-sessions">0</div>
+                            <div class="stat-label">sessions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Add -->
+                <div class="quick-add card">
+                    <svg class="quick-add-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    <input type="text" id="quick-add-input" placeholder="add task..." class="quick-add-input">
+                </div>
+
+                <!-- Focus Tasks -->
+                <div id="focus-tasks-section" class="tasks-section" style="display: none;">
+                    <div class="section-header">focus</div>
+                    <div id="focus-tasks-list" class="tasks-list"></div>
+                </div>
+
+                <!-- Supporting Tasks -->
+                <div id="supporting-tasks-section" class="tasks-section" style="display: none;">
+                    <div class="section-header">supporting</div>
+                    <div id="supporting-tasks-list" class="tasks-list"></div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h3>you're all caught up</h3>
+                    <p>add a task to get started</p>
+                </div>
+
+                <!-- Floating Timer -->
+                <div id="floating-timer" class="floating-timer card" style="display: none;">
+                    <div class="timer-pulse"></div>
+                    <div class="timer-content">
+                        <div class="timer-task-name">Task name</div>
+                        <div class="timer-subtitle">tracking time</div>
+                    </div>
+                    <div class="timer-display">00:00</div>
+                    <button class="timer-stop-button">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- All Tasks View -->
+            <div id="tasks-view" class="view">
+                <div class="view-header">
+                    <div class="search-bar card">
+                        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <input type="text" id="task-search" placeholder="search tasks..." class="search-input">
+                    </div>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="active">active</button>
+                        <button class="filter-tab" data-filter="completed">completed</button>
+                        <button class="filter-tab" data-filter="all">all</button>
+                    </div>
+                </div>
+                <div id="all-tasks-list" class="tasks-list"></div>
+            </div>
+
+            <!-- Projects View -->
+            <div id="projects-view" class="view">
+                <div class="view-header-with-action">
+                    <h2 class="view-title">projects</h2>
+                    <button id="new-project-button" class="primary-button">
+                        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        new project
+                    </button>
+                </div>
+                <div id="projects-grid" class="projects-grid"></div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="analytics-view" class="view">
+                <div class="view-header">
+                    <h2 class="view-title">analytics</h2>
+                </div>
+                <div id="analytics-content" class="analytics-content">
+                    <!-- Analytics content will be injected here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Command Palette (Hidden by default) -->
+        <div id="command-palette" class="command-palette" style="display: none;">
+            <div class="command-palette-content card">
+                <input type="text" id="command-input" placeholder="Type a command..." class="command-input">
+                <div id="command-results" class="command-results"></div>
+            </div>
+        </div>
+
+        <!-- Task Detail Modal -->
+        <div id="task-modal" class="modal" style="display: none;">
+            <div class="modal-content card">
+                <div class="modal-header">
+                    <h3>task details</h3>
+                    <button class="modal-close">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">task</label>
+                        <input type="text" id="modal-task-title" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">notes</label>
+                        <textarea id="modal-task-notes" class="form-textarea" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-checkbox">
+                            <input type="checkbox" id="modal-task-focus">
+                            <span>focus task</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-save" class="primary-button">save</button>
+                    <button id="modal-cancel" class="secondary-button">cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- End of Day Reflection (Hidden by default) -->
+        <div id="reflection-overlay" class="reflection-overlay" style="display: none;">
+            <div class="reflection-content">
+                <div class="reflection-wave"></div>
+                <h2 class="reflection-title">you've done enough for today.</h2>
+                <div class="reflection-stats">
+                    <div class="reflection-stat">
+                        <div class="reflection-stat-value" id="reflection-time">0h 0m</div>
+                        <div class="reflection-stat-label">focus time</div>
+                    </div>
+                    <div class="reflection-stat">
+                        <div class="reflection-stat-value" id="reflection-tasks">0</div>
+                        <div class="reflection-stat-label">tasks completed</div>
+                    </div>
+                </div>
+                <p class="reflection-insight" id="reflection-insight">Great work today.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breathing Animation Canvas (for Focus Mode) -->
+    <canvas id="breathing-canvas" style="display: none;"></canvas>
+
+    <!-- Audio Elements -->
+    <audio id="sound-complete" preload="auto">
+        <source src="sounds/complete.wav" type="audio/wav">
+    </audio>
+    <audio id="sound-timer" preload="auto">
+        <source src="sounds/timer.wav" type="audio/wav">
+    </audio>
+    <audio id="sound-reflection" preload="auto">
+        <source src="sounds/reflection.wav" type="audio/wav">
+    </audio>
+
+    <script src="app.js"></script>
+</body>
+</html>
