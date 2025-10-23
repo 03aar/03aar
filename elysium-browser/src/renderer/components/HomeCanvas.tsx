@@ -60,8 +60,8 @@ export const HomeCanvas: React.FC = () => {
         className="ambient-background"
         animate={{
           background: isFocused
-            ? 'radial-gradient(circle at center, rgba(0, 122, 255, 0.03) 0%, transparent 70%)'
-            : 'radial-gradient(circle at center, rgba(233, 233, 234, 0.3) 0%, transparent 70%)'
+            ? 'radial-gradient(circle at center, rgba(10, 132, 255, 0.08) 0%, transparent 70%)'
+            : 'radial-gradient(circle at center, rgba(28, 28, 30, 0.8) 0%, transparent 70%)'
         }}
         transition={{ duration: 0.5 }}
       />
@@ -80,8 +80,8 @@ export const HomeCanvas: React.FC = () => {
             animate={{
               scale: isFocused ? 1.02 : 1,
               boxShadow: isFocused
-                ? '0 12px 48px rgba(0, 0, 0, 0.08)'
-                : '0 4px 20px rgba(0, 0, 0, 0.04)'
+                ? '0 12px 48px rgba(0, 0, 0, 0.6)'
+                : '0 4px 20px rgba(0, 0, 0, 0.4)'
             }}
             transition={{ duration: 0.15 }}
           >

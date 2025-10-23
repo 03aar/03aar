@@ -9,19 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Elysium Design System */
+        /* Elysium Design System - Dark Theme */
         :root {
-            --color-bg-primary: #FFFFFF;
-            --color-bg-secondary: #E9E9EA;
-            --color-bg-tertiary: #F9F9F9;
-            --color-nadoo: #E9E9EA;
-            --color-divider: #D9D9DA;
-            --color-text-primary: #121212;
-            --color-text-secondary: rgba(0, 0, 0, 0.55);
-            --color-text-tertiary: rgba(0, 0, 0, 0.35);
-            --color-accent: #007AFF;
-            --color-accent-hover: #0051D5;
-            --color-accent-light: rgba(0, 122, 255, 0.1);
+            --color-bg-primary: #000000;
+            --color-bg-secondary: #1C1C1E;
+            --color-bg-tertiary: #2C2C2E;
+            --color-nadoo: #1C1C1E;
+            --color-divider: #3A3A3C;
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: rgba(255, 255, 255, 0.65);
+            --color-text-tertiary: rgba(255, 255, 255, 0.45);
+            --color-accent: #0A84FF;
+            --color-accent-hover: #409CFF;
+            --color-accent-light: rgba(10, 132, 255, 0.15);
             --space-xs: 4px;
             --space-sm: 8px;
             --space-md: 16px;
@@ -33,10 +33,10 @@
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-full: 9999px;
-            --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.03);
-            --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.05);
-            --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.04);
-            --shadow-floating: 0 12px 48px rgba(0, 0, 0, 0.06);
+            --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.3);
+            --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-floating: 0 12px 48px rgba(0, 0, 0, 0.6);
             --transition-fast: 60ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
             --transition-base: 100ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
             --transition-slow: 150ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
@@ -237,13 +237,13 @@
         .ambient-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(233, 233, 234, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(28, 28, 30, 0.8) 0%, transparent 70%);
             pointer-events: none;
             transition: all 0.5s;
         }
 
         .home-canvas.focused .ambient-bg {
-            background: radial-gradient(circle at center, rgba(0, 122, 255, 0.03) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(10, 132, 255, 0.08) 0%, transparent 70%);
         }
 
         .home-content {
@@ -487,7 +487,7 @@
 
         .webview-container {
             flex: 1;
-            background: #f5f5f5;
+            background: var(--color-bg-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
