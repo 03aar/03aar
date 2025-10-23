@@ -1740,6 +1740,259 @@
             transform: scale(1.1);
         }
 
+        /* Onboarding Flow */
+        .onboarding-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-lg);
+        }
+
+        .onboarding-overlay.active {
+            display: flex;
+            animation: modalFade 0.3s ease;
+        }
+
+        .onboarding-content {
+            width: 100%;
+            max-width: 600px;
+            background: var(--color-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            text-align: center;
+            animation: commandSlide 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .onboarding-step {
+            display: none;
+        }
+
+        .onboarding-step.active {
+            display: block;
+            animation: viewFadeIn var(--transition-normal);
+        }
+
+        .onboarding-progress {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: all var(--transition-fast);
+        }
+
+        .progress-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .onboarding-icon {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .onboarding-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.02em;
+        }
+
+        .onboarding-subtitle {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            line-height: 1.6;
+        }
+
+        .onboarding-input {
+            width: 100%;
+            padding: var(--space-md) var(--space-lg);
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            color: var(--color-text);
+            font-size: 18px;
+            font-family: inherit;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-lg);
+        }
+
+        .onboarding-input:focus {
+            border-color: white;
+            background: var(--gray-50);
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .role-card {
+            padding: var(--space-lg);
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: center;
+        }
+
+        .role-card:hover {
+            border-color: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .role-card.selected {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .role-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .role-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .role-desc {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .goals-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            text-align: left;
+        }
+
+        .goal-item {
+            padding: var(--space-md);
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .goal-item:hover {
+            border-color: var(--gray-300);
+        }
+
+        .goal-item.selected {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .goal-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-400);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .goal-item.selected .goal-checkbox {
+            background: white;
+            border-color: white;
+        }
+
+        .goal-item.selected .goal-checkbox::after {
+            content: '✓';
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .feature-tour {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            text-align: left;
+        }
+
+        .feature-item {
+            padding: var(--space-md);
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .feature-content p {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .onboarding-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: var(--space-md) var(--space-xl);
+            font-size: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .onboarding-content {
+                padding: var(--space-lg);
+            }
+
+            .onboarding-title {
+                font-size: 24px;
+            }
+        }
+
         .hidden {
             display: none !important;
         }
@@ -2055,6 +2308,180 @@
         </div>
     </div>
 
+    <!-- Onboarding Overlay -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <div class="onboarding-content">
+            <!-- Progress Indicator -->
+            <div class="onboarding-progress" id="onboardingProgress">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+
+            <!-- Step 1: Welcome & Name -->
+            <div class="onboarding-step active" id="step-1">
+                <div class="onboarding-icon">👋</div>
+                <h2 class="onboarding-title">Welcome to Followw</h2>
+                <p class="onboarding-subtitle">
+                    The personal work OS that moves with you.<br>
+                    Let's get you set up in 60 seconds.
+                </p>
+                <input
+                    type="text"
+                    class="onboarding-input"
+                    id="userName"
+                    placeholder="What's your name?"
+                    autocomplete="off"
+                />
+                <div class="onboarding-actions">
+                    <button class="btn btn-primary btn-large" onclick="nextOnboardingStep()">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Role Selection -->
+            <div class="onboarding-step" id="step-2">
+                <div class="onboarding-icon">💼</div>
+                <h2 class="onboarding-title">What best describes you?</h2>
+                <p class="onboarding-subtitle">
+                    We'll personalize your experience based on your role.
+                </p>
+                <div class="role-grid" id="roleGrid">
+                    <div class="role-card" data-role="freelancer">
+                        <div class="role-icon">🎯</div>
+                        <div class="role-title">Freelancer</div>
+                        <div class="role-desc">Track clients & billable hours</div>
+                    </div>
+                    <div class="role-card" data-role="developer">
+                        <div class="role-icon">💻</div>
+                        <div class="role-title">Developer</div>
+                        <div class="role-desc">Manage sprints & code tasks</div>
+                    </div>
+                    <div class="role-card" data-role="designer">
+                        <div class="role-icon">🎨</div>
+                        <div class="role-title">Designer</div>
+                        <div class="role-desc">Organize projects & reviews</div>
+                    </div>
+                    <div class="role-card" data-role="founder">
+                        <div class="role-icon">🚀</div>
+                        <div class="role-title">Founder</div>
+                        <div class="role-desc">Build products & lead teams</div>
+                    </div>
+                    <div class="role-card" data-role="manager">
+                        <div class="role-icon">📊</div>
+                        <div class="role-title">Manager</div>
+                        <div class="role-desc">Coordinate teams & workflows</div>
+                    </div>
+                    <div class="role-card" data-role="student">
+                        <div class="role-icon">📚</div>
+                        <div class="role-title">Student</div>
+                        <div class="role-desc">Study plans & assignments</div>
+                    </div>
+                </div>
+                <div class="onboarding-actions">
+                    <button class="btn btn-secondary" onclick="prevOnboardingStep()">← Back</button>
+                    <button class="btn btn-primary btn-large" onclick="nextOnboardingStep()" id="roleNextBtn" disabled>
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Goals -->
+            <div class="onboarding-step" id="step-3">
+                <div class="onboarding-icon">🎯</div>
+                <h2 class="onboarding-title">What are your goals?</h2>
+                <p class="onboarding-subtitle">
+                    Select all that apply. We'll help you achieve them.
+                </p>
+                <div class="goals-list" id="goalsList">
+                    <div class="goal-item" data-goal="focus">
+                        <div class="goal-checkbox"></div>
+                        <div style="flex: 1;">
+                            <strong>Stay focused</strong> - Minimize distractions and get in flow
+                        </div>
+                    </div>
+                    <div class="goal-item" data-goal="organize">
+                        <div class="goal-checkbox"></div>
+                        <div style="flex: 1;">
+                            <strong>Get organized</strong> - Bring order to chaotic workload
+                        </div>
+                    </div>
+                    <div class="goal-item" data-goal="track-time">
+                        <div class="goal-checkbox"></div>
+                        <div style="flex: 1;">
+                            <strong>Track time</strong> - Know where your hours go
+                        </div>
+                    </div>
+                    <div class="goal-item" data-goal="collaborate">
+                        <div class="goal-checkbox"></div>
+                        <div style="flex: 1;">
+                            <strong>Collaborate better</strong> - Coordinate with clients/teams
+                        </div>
+                    </div>
+                    <div class="goal-item" data-goal="productivity">
+                        <div class="goal-checkbox"></div>
+                        <div style="flex: 1;">
+                            <strong>Boost productivity</strong> - Get more done in less time
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-actions">
+                    <button class="btn btn-secondary" onclick="prevOnboardingStep()">← Back</button>
+                    <button class="btn btn-primary btn-large" onclick="nextOnboardingStep()">
+                        Continue →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Feature Tour -->
+            <div class="onboarding-step" id="step-4">
+                <div class="onboarding-icon">✨</div>
+                <h2 class="onboarding-title">Your new superpowers</h2>
+                <p class="onboarding-subtitle">
+                    Here's what makes Followw different.
+                </p>
+                <div class="feature-tour">
+                    <div class="feature-item">
+                        <div class="feature-icon">📋</div>
+                        <div class="feature-content">
+                            <h4>Kanban Board</h4>
+                            <p>Drag tasks through Backlog → To Do → In Progress → Done. Visual workflow at a glance.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⌨️</div>
+                        <div class="feature-content">
+                            <h4>Keyboard Shortcuts</h4>
+                            <p>⌘K for commands, ⌘1-5 to switch views, ⌘N for new tasks. Lightning fast.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-content">
+                            <h4>Focus Mode</h4>
+                            <p>Deep work mode with breathing animation and timer. Block distractions completely.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💾</div>
+                        <div class="feature-content">
+                            <h4>Auto-Save</h4>
+                            <p>Every 3 seconds with backup. Your work is always safe, even offline.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="onboarding-actions">
+                    <button class="btn btn-secondary" onclick="prevOnboardingStep()">← Back</button>
+                    <button class="btn btn-primary btn-large" onclick="completeOnboarding()">
+                        Let's Go! 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Reflection Overlay -->
     <div class="reflection" id="reflection">
         <div class="reflection-content">
@@ -2111,6 +2538,13 @@
                 autoSave: true,
                 saveInterval: 3000 // 3 seconds
             },
+            userProfile: {
+                name: '',
+                role: '',
+                goals: [],
+                onboardingCompleted: false,
+                joinedDate: null
+            },
             lastSaved: null,
             saveTimer: null
         };
@@ -2162,11 +2596,19 @@
             // Start auto-save
             startAutoSave();
 
-            // Add sample tasks if empty
-            if (state.tasks.length === 0) {
-                SAMPLE_TASKS.slice(0, 3).forEach((title, i) => {
-                    addTask(title, i < 2);
-                });
+            // Check if onboarding is needed
+            if (!state.userProfile.onboardingCompleted) {
+                // Show onboarding after welcome screen
+                setTimeout(() => {
+                    showOnboarding();
+                }, 500);
+            } else {
+                // Add sample tasks if empty (for returning users)
+                if (state.tasks.length === 0) {
+                    SAMPLE_TASKS.slice(0, 3).forEach((title, i) => {
+                        addTask(title, i < 2);
+                    });
+                }
             }
 
             // Request notification permission if reminders enabled
@@ -2195,6 +2637,7 @@
                     state.clients = data.clients || SAMPLE_CLIENTS;
                     state.stats = data.stats || state.stats;
                     state.settings = { ...state.settings, ...(data.settings || {}) };
+                    state.userProfile = { ...state.userProfile, ...(data.userProfile || {}) };
                 } else {
                     state.clients = SAMPLE_CLIENTS;
                 }
@@ -2207,6 +2650,7 @@
                         state.tasks = backupData.tasks || [];
                         state.clients = backupData.clients || SAMPLE_CLIENTS;
                         state.stats = backupData.stats || state.stats;
+                        state.userProfile = { ...state.userProfile, ...(backupData.userProfile || {}) };
                         console.log('Restored from backup');
                     }
                 }
@@ -2220,6 +2664,7 @@
                         state.tasks = backupData.tasks || [];
                         state.clients = backupData.clients || SAMPLE_CLIENTS;
                         state.stats = backupData.stats || state.stats;
+                        state.userProfile = { ...state.userProfile, ...(backupData.userProfile || {}) };
                         console.log('Restored from backup after error');
                     }
                 } catch (backupError) {
@@ -2235,6 +2680,7 @@
                     clients: state.clients,
                     stats: state.stats,
                     settings: state.settings,
+                    userProfile: state.userProfile,
                     timestamp: Date.now(),
                     version: APP_VERSION
                 };
@@ -3094,10 +3540,17 @@ Board View Features:
             const hour = new Date().getHours();
             let greeting;
 
-            if (hour < 12) greeting = 'good morning.';
-            else if (hour < 17) greeting = 'good afternoon.';
-            else if (hour < 21) greeting = 'good evening.';
-            else greeting = 'good night.';
+            if (hour < 12) greeting = 'good morning';
+            else if (hour < 17) greeting = 'good afternoon';
+            else if (hour < 21) greeting = 'good evening';
+            else greeting = 'good night';
+
+            // Personalize if user has completed onboarding
+            if (state.userProfile.name && state.userProfile.onboardingCompleted) {
+                greeting += `, ${state.userProfile.name}`;
+            }
+
+            greeting += '.';
 
             document.getElementById('greeting').textContent = greeting;
         }
@@ -3484,7 +3937,212 @@ Board View Features:
                     }
                 });
             }
+
+            // Setup onboarding interactions
+            setupOnboardingInteractions();
         });
+
+        // ===== ONBOARDING SYSTEM =====
+
+        let currentOnboardingStep = 1;
+        let selectedRole = '';
+        let selectedGoals = [];
+
+        function setupOnboardingInteractions() {
+            // Role card selection
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedRole = card.dataset.role;
+                    document.getElementById('roleNextBtn').disabled = false;
+                });
+            });
+
+            // Goal selection
+            document.querySelectorAll('.goal-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('selected');
+                    const goal = item.dataset.goal;
+                    if (selectedGoals.includes(goal)) {
+                        selectedGoals = selectedGoals.filter(g => g !== goal);
+                    } else {
+                        selectedGoals.push(goal);
+                    }
+                });
+            });
+
+            // Enter key on name input
+            const nameInput = document.getElementById('userName');
+            if (nameInput) {
+                nameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && nameInput.value.trim()) {
+                        nextOnboardingStep();
+                    }
+                });
+            }
+        }
+
+        function showOnboarding() {
+            document.getElementById('onboardingOverlay').classList.add('active');
+            currentOnboardingStep = 1;
+            selectedRole = '';
+            selectedGoals = [];
+            updateOnboardingProgress();
+        }
+
+        function nextOnboardingStep() {
+            // Validate current step
+            if (currentOnboardingStep === 1) {
+                const name = document.getElementById('userName').value.trim();
+                if (!name) {
+                    document.getElementById('userName').focus();
+                    return;
+                }
+                state.userProfile.name = name;
+            } else if (currentOnboardingStep === 2) {
+                if (!selectedRole) {
+                    return;
+                }
+                state.userProfile.role = selectedRole;
+            } else if (currentOnboardingStep === 3) {
+                state.userProfile.goals = selectedGoals;
+            }
+
+            // Move to next step
+            document.getElementById(`step-${currentOnboardingStep}`).classList.remove('active');
+            currentOnboardingStep++;
+            document.getElementById(`step-${currentOnboardingStep}`).classList.add('active');
+            updateOnboardingProgress();
+        }
+
+        function prevOnboardingStep() {
+            document.getElementById(`step-${currentOnboardingStep}`).classList.remove('active');
+            currentOnboardingStep--;
+            document.getElementById(`step-${currentOnboardingStep}`).classList.add('active');
+            updateOnboardingProgress();
+        }
+
+        function updateOnboardingProgress() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                if (index + 1 === currentOnboardingStep) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function completeOnboarding() {
+            state.userProfile.onboardingCompleted = true;
+            state.userProfile.joinedDate = Date.now();
+
+            // Generate personalized sample data
+            generatePersonalizedData();
+
+            // Save profile
+            saveState();
+
+            // Close onboarding
+            document.getElementById('onboardingOverlay').classList.remove('active');
+
+            // Show confetti
+            if (typeof confetti !== 'undefined') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Update greeting with name
+            updateGreeting();
+            renderAll();
+        }
+
+        function generatePersonalizedData() {
+            // Clear existing sample data
+            state.tasks = [];
+            state.clients = [];
+
+            // Role-specific clients
+            const clientsByRole = {
+                freelancer: [
+                    { name: 'Acme Corp', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'TechStart', color: '#10B981', tasks: 0, time: 0 },
+                    { name: 'Design Studio', color: '#F59E0B', tasks: 0, time: 0 }
+                ],
+                developer: [
+                    { name: 'Main Project', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'Open Source', color: '#10B981', tasks: 0, time: 0 }
+                ],
+                designer: [
+                    { name: 'Client Work', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'Personal Projects', color: '#EF476F', tasks: 0, time: 0 }
+                ],
+                founder: [
+                    { name: 'Product Development', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'Marketing', color: '#10B981', tasks: 0, time: 0 },
+                    { name: 'Fundraising', color: '#F59E0B', tasks: 0, time: 0 }
+                ],
+                manager: [
+                    { name: 'Team Alpha', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'Team Beta', color: '#10B981', tasks: 0, time: 0 }
+                ],
+                student: [
+                    { name: 'Computer Science', color: '#3A76F0', tasks: 0, time: 0 },
+                    { name: 'Projects', color: '#10B981', tasks: 0, time: 0 }
+                ]
+            };
+
+            state.clients = clientsByRole[selectedRole] || clientsByRole.freelancer;
+
+            // Role-specific tasks
+            const tasksByRole = {
+                freelancer: [
+                    { title: 'Send invoice to Acme Corp', client: 'Acme Corp', status: 'todo', priority: 'high' },
+                    { title: 'Design landing page for TechStart', client: 'TechStart', status: 'inprogress', priority: 'high', estimatedHours: 3 },
+                    { title: 'Review contract with Design Studio', client: 'Design Studio', status: 'backlog', priority: 'normal' }
+                ],
+                developer: [
+                    { title: 'Fix authentication bug #urgent', client: null, status: 'inprogress', priority: 'high' },
+                    { title: 'Implement dark mode feature', client: 'Main Project', status: 'todo', priority: 'normal', estimatedHours: 5 },
+                    { title: 'Review pull requests', client: 'Open Source', status: 'backlog', priority: 'normal' }
+                ],
+                designer: [
+                    { title: 'Create brand guidelines', client: 'Client Work', status: 'inprogress', priority: 'high', estimatedHours: 4 },
+                    { title: 'Portfolio redesign', client: 'Personal Projects', status: 'todo', priority: 'normal' },
+                    { title: 'Client presentation deck', client: 'Client Work', status: 'backlog', priority: 'normal' }
+                ],
+                founder: [
+                    { title: 'Finalize product roadmap', client: 'Product Development', status: 'inprogress', priority: 'high' },
+                    { title: 'Review investor pitch deck', client: 'Fundraising', status: 'todo', priority: 'high', estimatedHours: 2 },
+                    { title: 'Plan marketing campaign', client: 'Marketing', status: 'backlog', priority: 'normal' }
+                ],
+                manager: [
+                    { title: 'Team standup meeting', client: 'Team Alpha', status: 'todo', priority: 'high' },
+                    { title: 'Review quarterly OKRs', client: 'Team Beta', status: 'inprogress', priority: 'normal' },
+                    { title: 'Performance reviews', client: null, status: 'backlog', priority: 'normal' }
+                ],
+                student: [
+                    { title: 'Complete algorithm assignment #urgent', client: 'Computer Science', status: 'inprogress', priority: 'high' },
+                    { title: 'Study for midterm exam', client: 'Computer Science', status: 'todo', priority: 'high' },
+                    { title: 'Work on final project', client: 'Projects', status: 'backlog', priority: 'normal', estimatedHours: 10 }
+                ]
+            };
+
+            const roleTasks = tasksByRole[selectedRole] || tasksByRole.freelancer;
+
+            roleTasks.forEach((task, i) => {
+                addTask(task.title, i === 0, task.client, task.status);
+                const createdTask = state.tasks[state.tasks.length - 1];
+                if (task.priority) createdTask.priority = task.priority;
+                if (task.estimatedHours) createdTask.estimatedHours = task.estimatedHours;
+            });
+
+            saveState();
+        }
 
         function filterTasks(filter) {
             console.log('Filtering tasks:', filter);
