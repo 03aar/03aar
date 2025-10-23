@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Followw - Work that moves with you</title>
+    <title>Followw - The Flow Operating System</title>
+    <meta name="description" content="Work that moves with you. A complete Flow Operating System for modern professionals.">
+    <!-- Confetti library for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* ===== FOLLOWW DESIGN SYSTEM ===== */
+        /* ===== FOLLOWW COMPLETE DESIGN SYSTEM ===== */
         * {
             margin: 0;
             padding: 0;
@@ -13,16 +16,21 @@
         }
 
         :root {
-            --color-bg: #F9FAFB;
-            --color-card: #FFFFFF;
-            --color-text: #1C1C1E;
-            --color-text-secondary: #6B7280;
-            --color-accent: #3A76F0;
-            --color-success: #3FD08E;
-            --color-error: #EF476F;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-400: #9CA3AF;
+            --color-bg: #000000;
+            --color-card: #0A0A0A;
+            --color-text: #FFFFFF;
+            --color-text-secondary: #888888;
+            --color-accent: #FFFFFF;
+            --color-success: #FFFFFF;
+            --color-warning: #CCCCCC;
+            --color-error: #FFFFFF;
+
+            --gray-50: #0A0A0A;
+            --gray-100: #1A1A1A;
+            --gray-200: #2A2A2A;
+            --gray-300: #3A3A3A;
+            --gray-400: #666666;
+            --gray-500: #888888;
 
             --space-xs: 4px;
             --space-sm: 8px;
@@ -33,57 +41,162 @@
 
             --radius-sm: 8px;
             --radius-md: 12px;
+            --radius-lg: 16px;
             --radius-xl: 24px;
 
-            --transition: 220ms cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            --transition-fast: 180ms cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            --transition-normal: 220ms cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            --transition-slow: 400ms cubic-bezier(0.32, 0.08, 0.24, 1.0);
+
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --color-bg: #1C1C1E;
-                --color-card: #2C2C2E;
-                --color-text: #F9FAFB;
-                --color-text-secondary: #9CA3AF;
-                --gray-200: #3C3C3E;
-                --gray-300: #4C4C4E;
+                --color-bg: #000000;
+                --color-card: #0A0A0A;
+                --color-text: #FFFFFF;
+                --color-text-secondary: #888888;
+                --gray-100: #1A1A1A;
+                --gray-200: #2A2A2A;
+                --gray-300: #3A3A3A;
+                --gray-400: #666666;
             }
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Text', sans-serif;
+            background: #000000;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             color: var(--color-text);
+            overflow: hidden;
         }
 
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: welcomeFade 0.6s ease;
+        }
+
+        .welcome-screen.hidden {
+            animation: welcomeFadeOut 0.6s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes welcomeFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes welcomeFadeOut {
+            to { opacity: 0; }
+        }
+
+        .welcome-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            margin-bottom: var(--space-xl);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--space-sm);
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-tagline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: var(--space-2xl);
+            text-align: center;
+        }
+
+        .welcome-button {
+            padding: 16px 48px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-button:hover {
+            background: white;
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main App */
         .app-container {
             width: 100%;
-            max-width: 900px;
-            height: 85vh;
-            background: rgba(249, 250, 251, 0.95);
-            backdrop-filter: blur(20px);
+            max-width: 1200px;
+            height: 90vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-xl);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            animation: slideIn 0.4s cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            animation: appSlideIn 0.5s cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            opacity: 0;
+        }
+
+        .app-container.visible {
+            opacity: 1;
         }
 
         @media (prefers-color-scheme: dark) {
             .app-container {
-                background: rgba(28, 28, 30, 0.95);
+                background: rgba(10, 10, 10, 0.95);
             }
         }
 
-        @keyframes slideIn {
+        @keyframes appSlideIn {
             from {
                 opacity: 0;
-                transform: scale(0.95) translateY(20px);
+                transform: scale(0.95) translateY(30px);
             }
             to {
                 opacity: 1;
@@ -98,34 +211,47 @@
             align-items: center;
             padding: var(--space-lg);
             border-bottom: 1px solid var(--gray-200);
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .greeting {
+            flex: 1;
+            min-width: 200px;
         }
 
         .greeting h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 600;
             margin-bottom: 4px;
+            letter-spacing: -0.02em;
         }
 
         .greeting p {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--color-text-secondary);
         }
 
         .view-tabs {
             display: flex;
             gap: var(--space-sm);
+            flex: 0 0 auto;
         }
 
         .tab {
-            padding: 6px 16px;
+            padding: 8px 20px;
             border: none;
             background: transparent;
             color: var(--color-text-secondary);
-            font-size: 13px;
+            font-size: 14px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all var(--transition);
+            transition: all var(--transition-fast);
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .tab:hover {
@@ -133,16 +259,43 @@
         }
 
         .tab.active {
-            background: var(--color-accent);
-            color: white;
+            background: white;
+            color: black;
         }
 
-        .hint {
+        .header-actions {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            font-size: 18px;
+        }
+
+        .icon-btn:hover {
+            background: var(--gray-200);
+            color: var(--color-text);
+        }
+
+        .shortcut-hint {
             font-size: 11px;
             color: var(--color-text-secondary);
             padding: 4px 12px;
             background: var(--gray-200);
             border-radius: 12px;
+            font-family: monospace;
         }
 
         /* Main Content */
@@ -156,21 +309,26 @@
             width: 8px;
         }
 
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
         .main-content::-webkit-scrollbar-thumb {
             background: var(--gray-300);
             border-radius: 4px;
         }
 
+        /* Views */
         .view {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: viewFadeIn var(--transition-normal);
         }
 
         .view.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes viewFadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -179,56 +337,66 @@
         .card {
             background: var(--color-card);
             border-radius: var(--radius-md);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
         }
 
         .card:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Stats Card */
-        .stats-card {
-            display: flex;
-            gap: var(--space-lg);
-            padding: var(--space-md);
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
             margin-bottom: var(--space-lg);
         }
 
-        .stat {
-            flex: 1;
+        .stat-card {
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .stat-header {
             display: flex;
             align-items: center;
             gap: var(--space-sm);
         }
 
         .stat-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--color-accent), #667eea);
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .stat-content h3 {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--color-text);
+            margin-bottom: 4px;
         }
 
         .stat-content p {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--color-text-secondary);
             text-transform: lowercase;
         }
 
-        .stat-divider {
-            width: 1px;
-            background: var(--gray-200);
+        .stat-trend {
+            font-size: 12px;
+            color: var(--color-success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* Quick Add */
@@ -245,9 +413,6 @@
             height: 24px;
             color: var(--color-accent);
             font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .quick-add input {
@@ -257,33 +422,50 @@
             font-size: 17px;
             outline: none;
             color: var(--color-text);
+            font-family: inherit;
         }
 
         .quick-add input::placeholder {
             color: var(--color-text-secondary);
         }
 
-        /* Tasks */
+        /* Sections */
         .section-header {
-            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-title {
+            font-size: 13px;
             color: var(--color-text-secondary);
             text-transform: lowercase;
-            margin-bottom: var(--space-sm);
-            padding-left: 4px;
+            font-weight: 500;
+        }
+
+        .section-count {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            background: var(--gray-200);
+            padding: 2px 8px;
+            border-radius: 10px;
         }
 
         .tasks-section {
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-xl);
         }
 
+        /* Task */
         .task {
             display: flex;
             align-items: center;
             gap: var(--space-md);
             padding: var(--space-md);
-            margin-bottom: var(--space-xs);
+            margin-bottom: var(--space-sm);
             cursor: pointer;
-            transition: all var(--transition);
+            transition: all var(--transition-fast);
+            position: relative;
         }
 
         .task:hover {
@@ -295,13 +477,18 @@
             opacity: 0.5;
         }
 
+        .task.focus {
+            border-left: 3px solid var(--color-accent);
+            padding-left: calc(var(--space-md) - 3px);
+        }
+
         .checkbox {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--gray-400);
             border-radius: 50%;
             cursor: pointer;
-            transition: all var(--transition);
+            transition: all var(--transition-fast);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -310,11 +497,19 @@
 
         .checkbox:hover {
             border-color: var(--color-accent);
+            transform: scale(1.1);
         }
 
         .task.completed .checkbox {
             background: var(--color-success);
             border-color: var(--color-success);
+            animation: checkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         .task.completed .checkbox::after {
@@ -326,19 +521,48 @@
 
         .task-content {
             flex: 1;
+            min-width: 0;
         }
 
         .task-title {
-            font-size: 17px;
+            font-size: 16px;
             margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .task-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
             font-size: 12px;
             color: var(--color-text-secondary);
+            flex-wrap: wrap;
         }
 
-        .timer-btn {
+        .task-tag {
+            padding: 2px 8px;
+            background: var(--gray-200);
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .task-client {
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: var(--space-xs);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .task:hover .task-actions {
+            opacity: 1;
+        }
+
+        .task-btn {
             width: 32px;
             height: 32px;
             border: none;
@@ -348,19 +572,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: all var(--transition);
-            color: var(--color-accent);
-            font-size: 18px;
+            transition: all var(--transition-fast);
+            font-size: 16px;
+            color: var(--color-text-secondary);
         }
 
-        .task:hover .timer-btn,
-        .timer-btn.active {
-            opacity: 1;
+        .task-btn:hover {
+            background: var(--gray-200);
+            color: var(--color-text);
         }
 
-        .timer-btn:hover {
-            background: rgba(58, 118, 240, 0.1);
+        .task-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
 
         /* Floating Timer */
@@ -371,82 +595,195 @@
             gap: var(--space-md);
             padding: var(--space-md);
             margin-top: var(--space-lg);
-            border: 2px solid rgba(58, 118, 240, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             position: relative;
-            animation: timerSlide 0.3s ease;
+            overflow: hidden;
         }
 
         .floating-timer.active {
             display: flex;
+            animation: timerSlide 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         @keyframes timerSlide {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px) scale(0.9);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .timer-pulse {
-            width: 10px;
-            height: 10px;
-            background: var(--color-accent);
+            width: 12px;
+            height: 12px;
+            background: white;
             border-radius: 50%;
             position: relative;
             animation: pulse 1.5s ease-in-out infinite;
+            flex-shrink: 0;
         }
 
         @keyframes pulse {
             0%, 100% {
-                box-shadow: 0 0 0 0 rgba(58, 118, 240, 0.7);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
             }
             50% {
-                box-shadow: 0 0 0 15px rgba(58, 118, 240, 0);
+                box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
             }
         }
 
         .timer-info {
             flex: 1;
+            min-width: 0;
         }
 
         .timer-task {
             font-weight: 600;
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .timer-label {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--color-text-secondary);
         }
 
         .timer-display {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            color: var(--color-accent);
+            color: white;
             font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
         }
 
         .timer-stop {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border: none;
             background: transparent;
             border-radius: 50%;
             cursor: pointer;
             color: var(--color-error);
-            font-size: 20px;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all var(--transition);
+            transition: all var(--transition-fast);
         }
 
         .timer-stop:hover {
             background: rgba(239, 71, 111, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Command Palette */
+        .command-palette {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 9000;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15vh;
+            animation: modalFade 0.2s ease;
+        }
+
+        .command-palette.active {
+            display: flex;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .command-content {
+            width: 600px;
+            max-width: 90%;
+            background: var(--color-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: commandSlide 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes commandSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .command-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .command-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            outline: none;
+            color: var(--color-text);
+            font-family: inherit;
+        }
+
+        .command-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .command-item {
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .command-item:hover,
+        .command-item.selected {
+            background: var(--gray-100);
+        }
+
+        .command-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gray-200);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .command-item-content h4 {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .command-item-content p {
+            font-size: 13px;
+            color: var(--color-text-secondary);
         }
 
         /* Empty State */
@@ -455,20 +792,22 @@
             padding: var(--space-2xl);
         }
 
-        .empty-state-icon {
+        .empty-icon {
             font-size: 64px;
             margin-bottom: var(--space-md);
             opacity: 0.3;
         }
 
         .empty-state h3 {
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: var(--space-sm);
+            font-weight: 600;
         }
 
         .empty-state p {
             color: var(--color-text-secondary);
             font-size: 15px;
+            line-height: 1.6;
         }
 
         /* Reflection Overlay */
@@ -479,15 +818,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #000000;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            animation: reflectionFade 0.6s ease;
+            z-index: 10000;
         }
 
         .reflection.active {
             display: flex;
+            animation: reflectionFade 0.8s ease;
         }
 
         @keyframes reflectionFade {
@@ -499,14 +838,14 @@
             text-align: center;
             color: white;
             padding: var(--space-2xl);
-            max-width: 600px;
+            max-width: 700px;
         }
 
         .reflection-wave {
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-            margin-bottom: var(--space-xl);
+            background: linear-gradient(90deg, transparent, white, transparent);
+            margin-bottom: var(--space-2xl);
             border-radius: 2px;
             animation: wave 4s ease-in-out;
         }
@@ -518,9 +857,10 @@
         }
 
         .reflection h2 {
-            font-size: 34px;
+            font-size: 40px;
             margin-bottom: var(--space-xl);
             font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
         .reflection-stats {
@@ -528,29 +868,50 @@
             gap: var(--space-2xl);
             justify-content: center;
             margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
         }
 
         .reflection-stat h3 {
-            font-size: 32px;
-            color: var(--color-accent);
-            margin-bottom: 8px;
+            font-size: 36px;
+            color: white;
+            margin-bottom: var(--space-sm);
+            font-weight: 700;
         }
 
         .reflection-stat p {
             font-size: 14px;
-            opacity: 0.7;
+            opacity: 0.8;
+            text-transform: lowercase;
         }
 
         .reflection-insight {
-            font-size: 18px;
+            font-size: 20px;
             opacity: 0.9;
             line-height: 1.6;
+            margin-bottom: var(--space-xl);
+        }
+
+        .reflection-close {
+            padding: 12px 32px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .reflection-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         /* Analytics */
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: var(--space-md);
             margin-bottom: var(--space-lg);
         }
@@ -559,11 +920,18 @@
             padding: var(--space-lg);
         }
 
-        .analytics-card h3 {
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .analytics-title {
             font-size: 14px;
             color: var(--color-text-secondary);
             text-transform: lowercase;
-            margin-bottom: var(--space-md);
+            font-weight: 500;
         }
 
         .chart-bar {
@@ -575,30 +943,128 @@
 
         .chart-label {
             font-size: 13px;
-            width: 80px;
+            width: 70px;
             color: var(--color-text-secondary);
         }
 
         .chart-track {
             flex: 1;
-            height: 24px;
+            height: 28px;
             background: var(--gray-200);
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
+            position: relative;
         }
 
         .chart-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--color-accent), #667eea);
-            border-radius: 12px;
-            transition: width 0.6s cubic-bezier(0.32, 0.08, 0.24, 1.0);
+            background: white;
+            border-radius: 14px;
+            transition: width 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            color: black;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .chart-value {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             width: 50px;
             text-align: right;
+        }
+
+        .insight-item {
+            padding: var(--space-md);
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .insight-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+        }
+
+        /* Clients View */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .client-card {
+            padding: var(--space-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .client-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .client-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .client-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .client-info h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .client-info p {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .client-stats {
+            display: flex;
+            gap: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .client-stat {
+            text-align: center;
+        }
+
+        .client-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .client-stat-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            text-transform: lowercase;
         }
 
         /* Buttons */
@@ -609,43 +1075,139 @@
             font-size: 15px;
             font-weight: 500;
             cursor: pointer;
-            transition: all var(--transition);
+            transition: all var(--transition-fast);
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: var(--color-accent);
-            color: white;
+            background: white;
+            color: black;
         }
 
         .btn-primary:hover {
-            transform: scale(0.98);
-            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        /* Focus Mode */
+        .focus-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 8000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: focusFade 0.6s ease;
+        }
+
+        .focus-mode.active {
+            display: flex;
+        }
+
+        @keyframes focusFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .focus-content {
+            max-width: 600px;
+            padding: var(--space-2xl);
+            text-align: center;
+            color: white;
+        }
+
+        .focus-task-title {
+            font-size: 32px;
+            margin-bottom: var(--space-xl);
+            font-weight: 600;
+        }
+
+        .focus-timer {
+            font-size: 64px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--space-xl);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .breathing-circle {
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 auto var(--space-xl);
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .stats-card {
-                flex-direction: column;
-            }
-
-            .stat-divider {
-                height: 1px;
-                width: 100%;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
             .view-tabs {
                 flex-wrap: wrap;
             }
 
-            .analytics-grid {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .analytics-grid,
+            .clients-grid {
                 grid-template-columns: 1fr;
             }
+
+            .reflection-stats {
+                flex-direction: column;
+                gap: var(--space-lg);
+            }
+
+            .command-content {
+                width: 95%;
+            }
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <!-- Main App Container -->
-    <div class="app-container">
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-logo">⚡</div>
+        <h1 class="welcome-title">Followw</h1>
+        <p class="welcome-tagline">work that moves with you.</p>
+        <button class="welcome-button" onclick="startApp()">Get Started</button>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
         <!-- Header -->
         <div class="header">
             <div class="greeting">
@@ -654,13 +1216,35 @@
             </div>
 
             <div class="view-tabs">
-                <button class="tab active" data-view="today">today</button>
-                <button class="tab" data-view="tasks">tasks</button>
-                <button class="tab" data-view="analytics">analytics</button>
+                <button class="tab active" data-view="today">
+                    <span>☀️</span>
+                    <span>today</span>
+                </button>
+                <button class="tab" data-view="tasks">
+                    <span>✓</span>
+                    <span>tasks</span>
+                </button>
+                <button class="tab" data-view="clients">
+                    <span>👥</span>
+                    <span>clients</span>
+                </button>
+                <button class="tab" data-view="analytics">
+                    <span>📊</span>
+                    <span>analytics</span>
+                </button>
             </div>
 
-            <div class="hint">
-                Press Ctrl/Cmd+Shift+Space in desktop app
+            <div class="header-actions">
+                <span class="shortcut-hint">⌘K</span>
+                <button class="icon-btn" onclick="toggleCommandPalette()" title="Command Palette">
+                    <span>⌘</span>
+                </button>
+                <button class="icon-btn" onclick="toggleFocusMode()" title="Focus Mode">
+                    <span>🎯</span>
+                </button>
+                <button class="icon-btn" onclick="exportData()" title="Export Data">
+                    <span>⤓</span>
+                </button>
             </div>
         </div>
 
@@ -668,29 +1252,49 @@
         <div class="main-content">
             <!-- Today View -->
             <div id="today-view" class="view active">
-                <!-- Stats Card -->
-                <div class="stats-card card">
-                    <div class="stat">
-                        <div class="stat-icon">⏱️</div>
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div class="stat-icon">⏱️</div>
+                        </div>
                         <div class="stat-content">
-                            <h3 id="stat-time">0h</h3>
+                            <h3 id="stat-time">0h 0m</h3>
                             <p>focus time</p>
+                            <div class="stat-trend">↑ 12% from yesterday</div>
                         </div>
                     </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat">
-                        <div class="stat-icon">✓</div>
+
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div class="stat-icon">✓</div>
+                        </div>
                         <div class="stat-content">
                             <h3 id="stat-completed">0</h3>
                             <p>completed</p>
+                            <div class="stat-trend">🎯 focus tasks: <span id="focus-count">0</span></div>
                         </div>
                     </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat">
-                        <div class="stat-icon">🔥</div>
+
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div class="stat-icon">🔥</div>
+                        </div>
                         <div class="stat-content">
-                            <h3 id="stat-sessions">0</h3>
-                            <p>sessions</p>
+                            <h3 id="stat-streak">0</h3>
+                            <p>day streak</p>
+                            <div class="stat-trend">Keep it going!</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div class="stat-icon">⚡</div>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="flow-score">—</h3>
+                            <p>flow score</p>
+                            <div class="stat-trend" id="flow-rating">Start tracking</div>
                         </div>
                     </div>
                 </div>
@@ -698,26 +1302,33 @@
                 <!-- Quick Add -->
                 <div class="quick-add card">
                     <div class="quick-add-icon">➕</div>
-                    <input type="text" id="quick-add" placeholder="add task..." />
+                    <input type="text" id="quick-add" placeholder="add task... (try 'Design pitch for tomorrow' or 'Review PR #urgent')" />
                 </div>
 
                 <!-- Focus Tasks -->
-                <div id="focus-section" class="tasks-section" style="display: none;">
-                    <div class="section-header">focus</div>
+                <div id="focus-section" class="tasks-section">
+                    <div class="section-header">
+                        <span class="section-title">🎯 focus</span>
+                        <span class="section-count" id="focus-task-count">0</span>
+                    </div>
                     <div id="focus-tasks"></div>
                 </div>
 
                 <!-- Supporting Tasks -->
-                <div id="supporting-section" class="tasks-section" style="display: none;">
-                    <div class="section-header">supporting</div>
+                <div id="supporting-section" class="tasks-section">
+                    <div class="section-header">
+                        <span class="section-title">📋 supporting</span>
+                        <span class="section-count" id="supporting-task-count">0</span>
+                    </div>
                     <div id="supporting-tasks"></div>
                 </div>
 
                 <!-- Empty State -->
                 <div id="empty-state" class="empty-state">
-                    <div class="empty-state-icon">✓</div>
+                    <div class="empty-icon">✨</div>
                     <h3>you're all caught up</h3>
-                    <p>add a task to get started</p>
+                    <p>Start by adding your first task above.<br>
+                    Try: "Design landing page" or "Review pull requests"</p>
                 </div>
 
                 <!-- Floating Timer -->
@@ -728,17 +1339,39 @@
                         <div class="timer-label">tracking time</div>
                     </div>
                     <div class="timer-display" id="timer-display">0:00</div>
-                    <button class="timer-stop" id="timer-stop">■</button>
+                    <button class="timer-stop" onclick="stopTimer()">■</button>
                 </div>
             </div>
 
             <!-- All Tasks View -->
             <div id="tasks-view" class="view">
+                <div class="section-header">
+                    <h2 class="section-title" style="font-size: 20px;">all tasks</h2>
+                    <button class="btn btn-secondary" onclick="filterTasks('all')">
+                        <span id="task-filter-label">All Tasks</span>
+                    </button>
+                </div>
                 <div id="all-tasks-list"></div>
-                <div id="all-tasks-empty" class="empty-state" style="display: none;">
-                    <div class="empty-state-icon">📋</div>
+                <div id="all-tasks-empty" class="empty-state hidden">
+                    <div class="empty-icon">📝</div>
                     <h3>no tasks yet</h3>
-                    <p>create your first task above</p>
+                    <p>Create your first task to get started</p>
+                </div>
+            </div>
+
+            <!-- Clients View -->
+            <div id="clients-view" class="view">
+                <div class="section-header">
+                    <h2 class="section-title" style="font-size: 20px;">clients</h2>
+                    <button class="btn btn-primary" onclick="addSampleClient()">
+                        <span>+ Add Client</span>
+                    </button>
+                </div>
+                <div class="clients-grid" id="clients-grid"></div>
+                <div id="clients-empty" class="empty-state">
+                    <div class="empty-icon">👥</div>
+                    <h3>no clients yet</h3>
+                    <p>Add clients to organize your work by customer or project owner</p>
                 </div>
             </div>
 
@@ -746,23 +1379,60 @@
             <div id="analytics-view" class="view">
                 <div class="analytics-grid">
                     <div class="analytics-card card">
-                        <h3>this week</h3>
+                        <div class="analytics-header">
+                            <h3 class="analytics-title">📈 this week</h3>
+                        </div>
                         <div id="weekly-chart"></div>
                     </div>
 
                     <div class="analytics-card card">
-                        <h3>insights</h3>
-                        <p id="insights-text" style="color: var(--color-text-secondary); line-height: 1.6;">
-                            Start tracking your tasks to see insights about your productivity patterns.
-                        </p>
+                        <div class="analytics-header">
+                            <h3 class="analytics-title">💡 insights</h3>
+                        </div>
+                        <div id="insights-list"></div>
+                    </div>
+
+                    <div class="analytics-card card">
+                        <div class="analytics-header">
+                            <h3 class="analytics-title">⚡ flow patterns</h3>
+                        </div>
+                        <div id="flow-patterns"></div>
+                    </div>
+
+                    <div class="analytics-card card">
+                        <div class="analytics-header">
+                            <h3 class="analytics-title">🎯 by client</h3>
+                        </div>
+                        <div id="client-breakdown"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Command Palette -->
+    <div class="command-palette" id="commandPalette">
+        <div class="command-content">
+            <div class="command-input-wrapper">
+                <span style="font-size: 20px;">⌘</span>
+                <input type="text" class="command-input" id="commandInput" placeholder="Type a command..." />
+            </div>
+            <div class="command-results" id="commandResults"></div>
+        </div>
+    </div>
+
+    <!-- Focus Mode -->
+    <div class="focus-mode" id="focusMode">
+        <div class="focus-content">
+            <div class="breathing-circle"></div>
+            <h2 class="focus-task-title" id="focusTaskTitle">Design Landing Page</h2>
+            <div class="focus-timer" id="focusTimer">0:00</div>
+            <button class="btn btn-primary" onclick="toggleFocusMode()">Exit Focus Mode</button>
+        </div>
+    </div>
+
     <!-- Reflection Overlay -->
-    <div id="reflection" class="reflection">
+    <div class="reflection" id="reflection">
         <div class="reflection-content">
             <div class="reflection-wave"></div>
             <h2>you've done enough for today.</h2>
@@ -775,79 +1445,207 @@
                     <h3 id="reflection-tasks">0</h3>
                     <p>tasks completed</p>
                 </div>
+                <div class="reflection-stat">
+                    <h3 id="reflection-flow">—</h3>
+                    <p>flow score</p>
+                </div>
             </div>
-            <p class="reflection-insight" id="reflection-insight">Great work today.</p>
+            <p class="reflection-insight" id="reflection-insight">
+                Great work today. You maintained excellent focus and completed all your priorities.
+            </p>
+            <button class="reflection-close" onclick="closeReflection()">Continue</button>
         </div>
     </div>
 
     <script>
-        // ===== STATE MANAGEMENT =====
+        // ===== FOLLOWW - COMPLETE APPLICATION =====
+
+        const APP_VERSION = '1.0.0';
+        const STORAGE_KEY = 'followw_data_v1';
+
+        // State Management
         const state = {
             tasks: [],
+            clients: [],
             activeTimer: null,
             timerInterval: null,
             currentView: 'today',
-            stats: { time: 0, completed: 0, sessions: 0 }
+            focusMode: false,
+            stats: {
+                totalMinutes: 0,
+                completed: 0,
+                sessions: 0,
+                streak: 0,
+                flowScore: 0
+            },
+            settings: {
+                theme: 'system',
+                sounds: true,
+                notifications: true
+            }
         };
 
-        // Load from localStorage
-        function loadState() {
-            const saved = localStorage.getItem('followw-state');
-            if (saved) {
-                const data = JSON.parse(saved);
-                state.tasks = data.tasks || [];
-                state.stats = data.stats || state.stats;
+        // Sample data
+        const SAMPLE_CLIENTS = [
+            { name: 'Acme Corp', color: '#3A76F0', tasks: 12, time: 240 },
+            { name: 'TechStart', color: '#10B981', tasks: 8, time: 180 },
+            { name: 'Design Studio', color: '#F59E0B', tasks: 15, time: 320 }
+        ];
+
+        const SAMPLE_TASKS = [
+            'Design landing page for new product',
+            'Review pull requests and merge',
+            'Write documentation for API',
+            'Plan Q2 roadmap meeting',
+            'Update client presentation deck'
+        ];
+
+        const INSIGHTS = [
+            "You're most productive between 9-11 AM. Schedule deep work then.",
+            "Your focus sessions average 45 minutes. Try the Pomodoro technique.",
+            "You completed all focus tasks this week. Excellent prioritization!",
+            "Take more breaks to maintain energy throughout the day.",
+            "Your flow score improved 23% this week. Keep it up!"
+        ];
+
+        // ===== INITIALIZATION =====
+
+        function startApp() {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const appContainer = document.getElementById('appContainer');
+
+            welcomeScreen.classList.add('hidden');
+            setTimeout(() => {
+                appContainer.classList.add('visible');
+                loadState();
+                init();
+            }, 600);
+        }
+
+        function init() {
+            updateGreeting();
+            renderAll();
+            setupEventListeners();
+            updateAnalytics();
+            setInterval(updateGreeting, 60000);
+
+            // Add sample tasks if empty
+            if (state.tasks.length === 0) {
+                SAMPLE_TASKS.slice(0, 3).forEach((title, i) => {
+                    addTask(title, i < 2);
+                });
             }
         }
 
-        // Save to localStorage
+        // ===== STATE MANAGEMENT =====
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    state.tasks = data.tasks || [];
+                    state.clients = data.clients || SAMPLE_CLIENTS;
+                    state.stats = data.stats || state.stats;
+                } else {
+                    state.clients = SAMPLE_CLIENTS;
+                }
+            } catch (e) {
+                console.error('Failed to load state:', e);
+            }
+        }
+
         function saveState() {
-            localStorage.setItem('followw-state', JSON.stringify({
-                tasks: state.tasks,
-                stats: state.stats
-            }));
+            try {
+                const data = {
+                    tasks: state.tasks,
+                    clients: state.clients,
+                    stats: state.stats,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.error('Failed to save state:', e);
+            }
         }
 
         // ===== TASK OPERATIONS =====
-        function addTask(title, isFocus = false) {
+
+        function addTask(title, isFocus = false, client = null) {
             const task = {
-                id: Date.now(),
+                id: Date.now() + Math.random(),
                 title,
                 isFocus,
                 completed: false,
+                client,
+                tags: extractTags(title),
+                notes: '',
                 createdAt: Date.now(),
-                timeSpent: 0
+                timeSpent: 0,
+                project: null
             };
+
             state.tasks.push(task);
             saveState();
-            renderTasks();
+            renderAll();
+
+            // Confetti for first task
+            if (state.tasks.length === 1 && typeof confetti !== 'undefined') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.8 }
+                });
+            }
+        }
+
+        function extractTags(title) {
+            const tags = [];
+            const tagMatch = title.match(/#\w+/g);
+            if (tagMatch) {
+                tags.push(...tagMatch.map(t => t.slice(1)));
+            }
+            return tags;
         }
 
         function toggleComplete(id) {
             const task = state.tasks.find(t => t.id === id);
-            if (task) {
-                task.completed = !task.completed;
-                if (task.completed) {
-                    state.stats.completed++;
-                    if (shouldShowReflection()) {
-                        setTimeout(showReflection, 500);
-                    }
-                } else {
-                    state.stats.completed--;
+            if (!task) return;
+
+            task.completed = !task.completed;
+
+            if (task.completed) {
+                state.stats.completed++;
+
+                // Confetti celebration
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
                 }
-                saveState();
-                renderTasks();
-                updateStats();
+
+                if (shouldShowReflection()) {
+                    setTimeout(showReflection, 800);
+                }
+            } else {
+                state.stats.completed = Math.max(0, state.stats.completed - 1);
             }
+
+            saveState();
+            renderAll();
+            updateFlowScore();
         }
 
         function deleteTask(id) {
             state.tasks = state.tasks.filter(t => t.id !== id);
             saveState();
-            renderTasks();
+            renderAll();
         }
 
         // ===== TIMER OPERATIONS =====
+
         function startTimer(taskId) {
             const task = state.tasks.find(t => t.id === taskId);
             if (!task) return;
@@ -856,14 +1654,18 @@
                 stopTimer();
             }
 
-            state.activeTimer = { taskId, startTime: Date.now() };
+            state.activeTimer = {
+                taskId,
+                startTime: Date.now()
+            };
+
             state.stats.sessions++;
 
             state.timerInterval = setInterval(() => {
                 updateTimerDisplay();
             }, 1000);
 
-            renderTasks();
+            renderAll();
             updateFloatingTimer();
         }
 
@@ -872,20 +1674,22 @@
 
             const elapsed = Date.now() - state.activeTimer.startTime;
             const task = state.tasks.find(t => t.id === state.activeTimer.taskId);
+
             if (task) {
                 task.timeSpent += elapsed;
             }
 
-            state.stats.time += Math.floor(elapsed / 60000);
+            const minutes = Math.floor(elapsed / 60000);
+            state.stats.totalMinutes += minutes;
 
             clearInterval(state.timerInterval);
             state.activeTimer = null;
             state.timerInterval = null;
 
             saveState();
-            renderTasks();
-            updateStats();
+            renderAll();
             updateFloatingTimer();
+            updateFlowScore();
         }
 
         function updateTimerDisplay() {
@@ -895,8 +1699,12 @@
             const minutes = Math.floor(elapsed / 60000);
             const seconds = Math.floor((elapsed % 60000) / 1000);
 
-            document.getElementById('timer-display').textContent =
-                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            const display = document.getElementById('timer-display');
+            const focusDisplay = document.getElementById('focusTimer');
+
+            const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            if (display) display.textContent = timeStr;
+            if (focusDisplay) focusDisplay.textContent = timeStr;
         }
 
         function updateFloatingTimer() {
@@ -914,120 +1722,152 @@
         }
 
         // ===== RENDERING =====
+
+        function renderAll() {
+            renderTasks();
+            updateStats();
+            renderClients();
+            updateAnalytics();
+        }
+
         function renderTasks() {
             const focusTasks = state.tasks.filter(t => !t.completed && t.isFocus);
             const supportingTasks = state.tasks.filter(t => !t.completed && !t.isFocus);
             const allTasks = state.tasks;
 
             // Today view
-            const focusContainer = document.getElementById('focus-tasks');
-            const supportingContainer = document.getElementById('supporting-tasks');
-            const emptyState = document.getElementById('empty-state');
-            const focusSection = document.getElementById('focus-section');
-            const supportingSection = document.getElementById('supporting-section');
+            renderTaskList(focusTasks, 'focus-tasks');
+            renderTaskList(supportingTasks, 'supporting-tasks');
 
-            focusContainer.innerHTML = '';
-            supportingContainer.innerHTML = '';
+            document.getElementById('focus-task-count').textContent = focusTasks.length;
+            document.getElementById('supporting-task-count').textContent = supportingTasks.length;
 
-            if (focusTasks.length === 0 && supportingTasks.length === 0) {
-                emptyState.style.display = 'block';
-                focusSection.style.display = 'none';
-                supportingSection.style.display = 'none';
-            } else {
-                emptyState.style.display = 'none';
-
-                if (focusTasks.length > 0) {
-                    focusSection.style.display = 'block';
-                    focusTasks.forEach(task => {
-                        focusContainer.appendChild(createTaskElement(task));
-                    });
-                } else {
-                    focusSection.style.display = 'none';
-                }
-
-                if (supportingTasks.length > 0) {
-                    supportingSection.style.display = 'block';
-                    supportingTasks.forEach(task => {
-                        supportingContainer.appendChild(createTaskElement(task));
-                    });
-                } else {
-                    supportingSection.style.display = 'none';
-                }
-            }
+            const hasToday = focusTasks.length > 0 || supportingTasks.length > 0;
+            document.getElementById('empty-state').classList.toggle('hidden', hasToday);
+            document.getElementById('focus-section').classList.toggle('hidden', focusTasks.length === 0);
+            document.getElementById('supporting-section').classList.toggle('hidden', supportingTasks.length === 0);
 
             // All tasks view
-            const allTasksList = document.getElementById('all-tasks-list');
-            const allTasksEmpty = document.getElementById('all-tasks-empty');
-
-            allTasksList.innerHTML = '';
-
-            if (allTasks.length === 0) {
-                allTasksEmpty.style.display = 'block';
-            } else {
-                allTasksEmpty.style.display = 'none';
-                allTasks.forEach(task => {
-                    allTasksList.appendChild(createTaskElement(task, true));
-                });
-            }
-
-            updateAnalytics();
+            renderTaskList(allTasks, 'all-tasks-list');
+            document.getElementById('all-tasks-empty').classList.toggle('hidden', allTasks.length > 0);
         }
 
-        function createTaskElement(task, showAll = false) {
-            const div = document.createElement('div');
-            div.className = 'task card' + (task.completed ? ' completed' : '');
+        function renderTaskList(tasks, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
-            const isTimerActive = state.activeTimer?.taskId === task.id;
+            container.innerHTML = '';
 
-            div.innerHTML = `
-                <div class="checkbox"></div>
-                <div class="task-content">
-                    <div class="task-title">${task.title}</div>
-                    ${task.timeSpent > 0 ? `<div class="task-meta">${formatTime(task.timeSpent)}</div>` : ''}
-                </div>
-                <button class="timer-btn ${isTimerActive ? 'active' : ''}">
-                    ${isTimerActive ? '■' : '▶'}
-                </button>
-            `;
+            tasks.forEach(task => {
+                const div = document.createElement('div');
+                div.className = 'task card' + (task.completed ? ' completed' : '') + (task.isFocus ? ' focus' : '');
 
-            div.querySelector('.checkbox').addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleComplete(task.id);
+                const isTimerActive = state.activeTimer?.taskId === task.id;
+
+                div.innerHTML = `
+                    <div class="checkbox" onclick="toggleComplete(${task.id})"></div>
+                    <div class="task-content" onclick="openTaskDetail(${task.id})">
+                        <div class="task-title">${escapeHtml(task.title)}</div>
+                        <div class="task-meta">
+                            ${task.client ? `<span class="task-client">@${task.client}</span>` : ''}
+                            ${task.tags.map(tag => `<span class="task-tag">#${tag}</span>`).join('')}
+                            ${task.timeSpent > 0 ? `<span class="task-time">⏱️ ${formatTime(task.timeSpent)}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn ${isTimerActive ? 'active' : ''}" onclick="toggleTimer(event, ${task.id})" title="${isTimerActive ? 'Stop timer' : 'Start timer'}">
+                            ${isTimerActive ? '■' : '▶'}
+                        </button>
+                        <button class="task-btn" onclick="deleteTask(${task.id})" title="Delete task">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(div);
             });
+        }
 
-            div.querySelector('.timer-btn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (isTimerActive) {
-                    stopTimer();
-                } else {
-                    startTimer(task.id);
-                }
+        function renderClients() {
+            const container = document.getElementById('clients-grid');
+            const empty = document.getElementById('clients-empty');
+
+            if (state.clients.length === 0) {
+                empty.classList.remove('hidden');
+                container.classList.add('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+
+            state.clients.forEach(client => {
+                const div = document.createElement('div');
+                div.className = 'client-card card';
+
+                div.innerHTML = `
+                    <div class="client-header">
+                        <div class="client-avatar" style="background: ${client.color}">
+                            ${client.name[0]}
+                        </div>
+                        <div class="client-info">
+                            <h3>${client.name}</h3>
+                            <p>${client.tasks} tasks</p>
+                        </div>
+                    </div>
+                    <div class="client-stats">
+                        <div class="client-stat">
+                            <div class="client-stat-value">${formatMinutes(client.time)}</div>
+                            <div class="client-stat-label">time</div>
+                        </div>
+                        <div class="client-stat">
+                            <div class="client-stat-value">${client.tasks}</div>
+                            <div class="client-stat-label">tasks</div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(div);
             });
-
-            return div;
         }
 
         function updateStats() {
-            document.getElementById('stat-time').textContent =
-                state.stats.time > 60 ? `${Math.floor(state.stats.time / 60)}h` : `${state.stats.time}m`;
+            const hours = Math.floor(state.stats.totalMinutes / 60);
+            const minutes = state.stats.totalMinutes % 60;
+            const timeText = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
+            document.getElementById('stat-time').textContent = timeText;
             document.getElementById('stat-completed').textContent = state.stats.completed;
-            document.getElementById('stat-sessions').textContent = state.stats.sessions;
+            document.getElementById('focus-count').textContent = state.tasks.filter(t => !t.completed && t.isFocus).length;
+            document.getElementById('stat-streak').textContent = state.stats.streak || Math.floor(state.stats.completed / 5);
+
+            const flowScore = calculateFlowScore();
+            document.getElementById('flow-score').textContent = flowScore > 0 ? flowScore : '—';
+            document.getElementById('flow-rating').textContent = getFlowRating(flowScore);
         }
 
         function updateAnalytics() {
-            // Weekly chart (demo data)
+            // Weekly chart
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const weeklyChart = document.getElementById('weekly-chart');
+            if (!weeklyChart) return;
+
             weeklyChart.innerHTML = '';
 
             days.forEach((day, i) => {
-                const value = i === new Date().getDay() ? state.stats.time : Math.floor(Math.random() * 120);
+                const value = i === new Date().getDay() ? state.stats.totalMinutes : Math.floor(Math.random() * 180);
+                const maxValue = 240;
+                const percentage = Math.min((value / maxValue) * 100, 100);
+
                 const bar = document.createElement('div');
                 bar.className = 'chart-bar';
                 bar.innerHTML = `
                     <div class="chart-label">${day}</div>
                     <div class="chart-track">
-                        <div class="chart-fill" style="width: ${(value / 180) * 100}%"></div>
+                        <div class="chart-fill" style="width: ${percentage}%">
+                            ${value > 20 ? value + 'm' : ''}
+                        </div>
                     </div>
                     <div class="chart-value">${value}m</div>
                 `;
@@ -1035,18 +1875,354 @@
             });
 
             // Insights
-            const insights = [
-                "You're building great momentum. Keep it going.",
-                "Your focus time is improving week over week.",
-                "Most productive time: 9-11 AM. Schedule deep work then.",
-                "You completed all focus tasks this week. Excellent!",
-                "Consider taking more breaks to maintain energy."
+            const insightsList = document.getElementById('insights-list');
+            if (insightsList) {
+                insightsList.innerHTML = '';
+
+                const insights = state.stats.totalMinutes > 0 ?
+                    INSIGHTS.slice(0, 3) :
+                    ["Start tracking time to see personalized insights about your productivity patterns."];
+
+                insights.forEach(insight => {
+                    const item = document.createElement('div');
+                    item.className = 'insight-item';
+                    item.innerHTML = `
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">${insight}</div>
+                    `;
+                    insightsList.appendChild(item);
+                });
+            }
+
+            // Flow patterns
+            const flowPatterns = document.getElementById('flow-patterns');
+            if (flowPatterns) {
+                const avgSession = state.stats.sessions > 0 ?
+                    Math.floor(state.stats.totalMinutes / state.stats.sessions) : 0;
+
+                flowPatterns.innerHTML = `
+                    <div class="insight-item">
+                        <div class="insight-icon">⏱️</div>
+                        <div class="insight-text">Average session: ${avgSession} minutes</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-icon">🎯</div>
+                        <div class="insight-text">Peak focus: ${state.stats.totalMinutes > 60 ? 'Mornings' : 'Track more to see'}</div>
+                    </div>
+                `;
+            }
+
+            // Client breakdown
+            const clientBreakdown = document.getElementById('client-breakdown');
+            if (clientBreakdown) {
+                clientBreakdown.innerHTML = '';
+
+                state.clients.slice(0, 5).forEach(client => {
+                    const bar = document.createElement('div');
+                    bar.className = 'chart-bar';
+                    bar.innerHTML = `
+                        <div class="chart-label">${client.name}</div>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: ${(client.time / 400) * 100}%"></div>
+                        </div>
+                        <div class="chart-value">${formatMinutes(client.time)}</div>
+                    `;
+                    clientBreakdown.appendChild(bar);
+                });
+            }
+        }
+
+        // ===== FLOW SCORE CALCULATION =====
+
+        function calculateFlowScore() {
+            if (state.stats.totalMinutes === 0) return 0;
+
+            const timeScore = Math.min(state.stats.totalMinutes / 180, 1);
+            const completionScore = Math.min(state.stats.completed / 5, 1);
+            const consistencyScore = state.stats.sessions > 0 ? Math.min(state.stats.totalMinutes / (state.stats.sessions * 30), 1) : 0;
+
+            const score = ((timeScore * 0.4) + (completionScore * 0.4) + (consistencyScore * 0.2)) * 100;
+
+            return Math.round(score);
+        }
+
+        function getFlowRating(score) {
+            if (score === 0) return 'Start tracking';
+            if (score < 30) return '🌱 Building';
+            if (score < 60) return '🔥 Good flow';
+            if (score < 85) return '⚡ Great flow';
+            return '🚀 Peak flow';
+        }
+
+        function updateFlowScore() {
+            const score = calculateFlowScore();
+            state.stats.flowScore = score;
+            saveState();
+            updateStats();
+        }
+
+        // ===== UI INTERACTIONS =====
+
+        function toggleTimer(event, taskId) {
+            event.stopPropagation();
+
+            if (state.activeTimer?.taskId === taskId) {
+                stopTimer();
+            } else {
+                startTimer(taskId);
+            }
+        }
+
+        function openTaskDetail(taskId) {
+            console.log('Opening task detail:', taskId);
+        }
+
+        function toggleFocusMode() {
+            const focusMode = document.getElementById('focusMode');
+            focusMode.classList.toggle('active');
+            state.focusMode = focusMode.classList.contains('active');
+
+            if (state.focusMode && state.activeTimer) {
+                const task = state.tasks.find(t => t.id === state.activeTimer.taskId);
+                if (task) {
+                    document.getElementById('focusTaskTitle').textContent = task.title;
+                }
+            }
+        }
+
+        function toggleCommandPalette() {
+            const palette = document.getElementById('commandPalette');
+            const isActive = palette.classList.contains('active');
+
+            if (isActive) {
+                palette.classList.remove('active');
+            } else {
+                palette.classList.add('active');
+                document.getElementById('commandInput').focus();
+                renderCommandResults();
+            }
+        }
+
+        function renderCommandResults() {
+            const results = document.getElementById('commandResults');
+
+            const commands = [
+                { icon: '➕', title: 'Add Task', desc: 'Create a new task • ⌘N', action: 'addTask' },
+                { icon: '🎯', title: 'Focus Mode', desc: 'Enter deep focus • ⌘F', action: 'focusMode' },
+                { icon: '📊', title: 'View Analytics', desc: 'See your stats • ⌘4', action: 'analytics' },
+                { icon: '⤓', title: 'Export Data', desc: 'Download your data', action: 'export' },
+                { icon: '⚡', title: 'Keyboard Shortcuts', desc: 'View all shortcuts', action: 'shortcuts' }
             ];
 
-            if (state.stats.completed > 0) {
-                document.getElementById('insights-text').textContent =
-                    insights[Math.floor(Math.random() * insights.length)];
+            results.innerHTML = '';
+
+            commands.forEach((cmd, i) => {
+                const item = document.createElement('div');
+                item.className = 'command-item' + (i === 0 ? ' selected' : '');
+                item.innerHTML = `
+                    <div class="command-icon">${cmd.icon}</div>
+                    <div class="command-item-content">
+                        <h4>${cmd.title}</h4>
+                        <p>${cmd.desc}</p>
+                    </div>
+                `;
+                item.onclick = () => executeCommand(cmd.action);
+                results.appendChild(item);
+            });
+        }
+
+        function executeCommand(action) {
+            toggleCommandPalette();
+
+            switch(action) {
+                case 'addTask':
+                    document.getElementById('quick-add').focus();
+                    break;
+                case 'focusMode':
+                    toggleFocusMode();
+                    break;
+                case 'analytics':
+                    switchView('analytics');
+                    break;
+                case 'export':
+                    exportData();
+                    break;
+                case 'shortcuts':
+                    showKeyboardShortcuts();
+                    break;
             }
+        }
+
+        function showKeyboardShortcuts() {
+            const shortcuts = `
+Keyboard Shortcuts:
+
+⌘K - Command Palette
+⌘N - New Task
+⌘F - Focus Mode
+⌘1 - Today View
+⌘2 - All Tasks
+⌘3 - Clients
+⌘4 - Analytics
+Esc - Close Overlays
+
+All shortcuts work with Ctrl on Windows/Linux.
+            `.trim();
+
+            alert(shortcuts);
+        }
+
+        function exportData() {
+            const data = {
+                version: APP_VERSION,
+                exportedAt: new Date().toISOString(),
+                tasks: state.tasks,
+                clients: state.clients,
+                stats: state.stats
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `followw-export-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('Data exported successfully! 📊');
+        }
+
+        // ===== REFLECTION =====
+
+        function shouldShowReflection() {
+            const todayTasks = state.tasks.filter(t => !t.completed);
+            return todayTasks.length === 0 && state.tasks.length > 0 && state.stats.totalMinutes > 30;
+        }
+
+        function showReflection() {
+            const reflection = document.getElementById('reflection');
+            reflection.classList.add('active');
+
+            const hours = Math.floor(state.stats.totalMinutes / 60);
+            const minutes = state.stats.totalMinutes % 60;
+
+            document.getElementById('reflection-time').textContent = `${hours}h ${minutes}m`;
+            document.getElementById('reflection-tasks').textContent = state.stats.completed;
+            document.getElementById('reflection-flow').textContent = state.stats.flowScore || '—';
+
+            const insights = [
+                "You maintained excellent focus throughout the day.",
+                "Great work on completing all your priorities.",
+                "Your consistency is building strong momentum.",
+                "You're making meaningful progress every day.",
+                "Keep up this excellent work rhythm."
+            ];
+
+            document.getElementById('reflection-insight').textContent =
+                insights[Math.floor(Math.random() * insights.length)];
+        }
+
+        function closeReflection() {
+            document.getElementById('reflection').classList.remove('active');
+        }
+
+        // ===== VIEW SWITCHING =====
+
+        function switchView(viewName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.view === viewName);
+            });
+
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+
+            document.getElementById(`${viewName}-view`).classList.add('active');
+            state.currentView = viewName;
+
+            if (viewName === 'analytics') {
+                updateAnalytics();
+            }
+        }
+
+        // ===== EVENT LISTENERS =====
+
+        function setupEventListeners() {
+            document.getElementById('quick-add').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && e.target.value.trim()) {
+                    const value = e.target.value.trim();
+                    const isFocus = state.tasks.filter(t => t.isFocus && !t.completed).length < 3;
+                    addTask(value, isFocus);
+                    e.target.value = '';
+                }
+            });
+
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => switchView(tab.dataset.view));
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Command palette: Cmd/Ctrl+K
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    toggleCommandPalette();
+                }
+
+                // Focus mode: Cmd/Ctrl+F
+                if ((e.metaKey || e.ctrlKey) && e.key === 'f' && !e.shiftKey) {
+                    e.preventDefault();
+                    toggleFocusMode();
+                }
+
+                // Quick add: Cmd/Ctrl+N
+                if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+                    e.preventDefault();
+                    document.getElementById('quick-add').focus();
+                }
+
+                // View switching: Cmd/Ctrl+1,2,3,4
+                if ((e.metaKey || e.ctrlKey) && ['1', '2', '3', '4'].includes(e.key)) {
+                    e.preventDefault();
+                    const views = ['today', 'tasks', 'clients', 'analytics'];
+                    switchView(views[parseInt(e.key) - 1]);
+                }
+
+                // Escape: Close overlays
+                if (e.key === 'Escape') {
+                    const palette = document.getElementById('commandPalette');
+                    const focusMode = document.getElementById('focusMode');
+                    const reflection = document.getElementById('reflection');
+
+                    if (palette.classList.contains('active')) {
+                        toggleCommandPalette();
+                    } else if (focusMode.classList.contains('active')) {
+                        toggleFocusMode();
+                    } else if (reflection.classList.contains('active')) {
+                        closeReflection();
+                    }
+                }
+            });
+
+            document.getElementById('commandPalette').addEventListener('click', (e) => {
+                if (e.target.id === 'commandPalette') {
+                    toggleCommandPalette();
+                }
+            });
+        }
+
+        // ===== HELPERS =====
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting;
+
+            if (hour < 12) greeting = 'good morning.';
+            else if (hour < 17) greeting = 'good afternoon.';
+            else if (hour < 21) greeting = 'good evening.';
+            else greeting = 'good night.';
+
+            document.getElementById('greeting').textContent = greeting;
         }
 
         function formatTime(ms) {
@@ -1060,86 +2236,48 @@
             return `${mins}m`;
         }
 
-        // ===== REFLECTION =====
-        function shouldShowReflection() {
-            const incompleteTasks = state.tasks.filter(t => !t.completed);
-            return incompleteTasks.length === 0 && state.tasks.length > 0;
-        }
+        function formatMinutes(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
 
-        function showReflection() {
-            const reflection = document.getElementById('reflection');
-            reflection.classList.add('active');
-
-            const hours = Math.floor(state.stats.time / 60);
-            const minutes = state.stats.time % 60;
-
-            document.getElementById('reflection-time').textContent = `${hours}h ${minutes}m`;
-            document.getElementById('reflection-tasks').textContent = state.stats.completed;
-
-            const insights = [
-                "Great work today.",
-                "You've built good momentum.",
-                "Keep this energy going.",
-                "You're making real progress.",
-                "Well done staying focused."
-            ];
-
-            document.getElementById('reflection-insight').textContent =
-                insights[Math.floor(Math.random() * insights.length)];
-
-            setTimeout(() => {
-                reflection.classList.remove('active');
-            }, 6000);
-        }
-
-        // ===== VIEW SWITCHING =====
-        function switchView(viewName) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.view === viewName);
-            });
-
-            document.querySelectorAll('.view').forEach(view => {
-                view.classList.remove('active');
-            });
-
-            document.getElementById(`${viewName}-view`).classList.add('active');
-            state.currentView = viewName;
-        }
-
-        // ===== GREETING =====
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            let greeting;
-
-            if (hour < 12) greeting = 'good morning.';
-            else if (hour < 17) greeting = 'good afternoon.';
-            else if (hour < 21) greeting = 'good evening.';
-            else greeting = 'good night.';
-
-            document.getElementById('greeting').textContent = greeting;
-        }
-
-        // ===== EVENT LISTENERS =====
-        document.getElementById('quick-add').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && e.target.value.trim()) {
-                const isFocus = state.tasks.filter(t => t.isFocus && !t.completed).length < 3;
-                addTask(e.target.value.trim(), isFocus);
-                e.target.value = '';
+            if (hours > 0) {
+                return `${hours}h ${mins}m`;
             }
-        });
+            return `${mins}m`;
+        }
 
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => switchView(tab.dataset.view));
-        });
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-        document.getElementById('timer-stop').addEventListener('click', stopTimer);
+        function addSampleClient() {
+            const names = ['Startup Inc', 'Enterprise Co', 'Agency XYZ', 'Product Labs'];
+            const colors = ['#3A76F0', '#10B981', '#F59E0B', '#EF476F'];
+
+            const client = {
+                name: names[Math.floor(Math.random() * names.length)],
+                color: colors[Math.floor(Math.random() * colors.length)],
+                tasks: Math.floor(Math.random() * 15) + 5,
+                time: Math.floor(Math.random() * 300) + 100
+            };
+
+            state.clients.push(client);
+            saveState();
+            renderClients();
+        }
+
+        function filterTasks(filter) {
+            console.log('Filtering tasks:', filter);
+        }
 
         // ===== INITIALIZATION =====
-        loadState();
-        updateGreeting();
-        renderTasks();
-        updateStats();
-        setInterval(updateGreeting, 60000);
+        setTimeout(() => {
+            if (document.getElementById('welcomeScreen').classList.contains('welcome-screen')) {
+                startApp();
+            }
+        }, 3000);
     </script>
 </body>
 </html>
