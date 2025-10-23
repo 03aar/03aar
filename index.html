@@ -1157,24 +1157,110 @@
             50% { transform: scale(1.2); opacity: 1; }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
+        /* Responsive Design */
+        /* Mobile First - Small devices */
+        @media (max-width: 640px) {
+            body {
+                padding: 0;
             }
 
-            .view-tabs {
-                flex-wrap: wrap;
+            .app-container {
+                max-width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+
+            .welcome-title {
+                font-size: 32px;
+            }
+
+            .welcome-tagline {
+                font-size: 16px;
+            }
+
+            .welcome-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
             }
 
             .header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+                gap: var(--space-sm);
+                padding: var(--space-md);
+            }
+
+            .greeting h1 {
+                font-size: 20px;
+            }
+
+            .view-tabs {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-xs);
+                width: 100%;
+            }
+
+            .tab {
+                padding: 8px 12px;
+                font-size: 13px;
+                justify-content: center;
             }
 
             .header-actions {
                 width: 100%;
                 justify-content: space-between;
+            }
+
+            .main-content {
+                padding: var(--space-md);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-sm);
+            }
+
+            .stat-card {
+                padding: var(--space-md);
+            }
+
+            .stat-content h3 {
+                font-size: 24px;
+            }
+
+            .quick-add {
+                padding: var(--space-sm);
+                flex-wrap: wrap;
+            }
+
+            .quick-add input {
+                font-size: 15px;
+            }
+
+            .task {
+                padding: var(--space-sm);
+                flex-wrap: wrap;
+            }
+
+            .task-title {
+                font-size: 14px;
+            }
+
+            .task-actions {
+                opacity: 1;
+            }
+
+            .floating-timer {
+                flex-direction: column;
+                padding: var(--space-sm);
+                text-align: center;
+            }
+
+            .timer-display {
+                font-size: 24px;
             }
 
             .analytics-grid,
@@ -1184,11 +1270,96 @@
 
             .reflection-stats {
                 flex-direction: column;
-                gap: var(--space-lg);
+                gap: var(--space-md);
+            }
+
+            .reflection h2 {
+                font-size: 28px;
+            }
+
+            .reflection-stat h3 {
+                font-size: 28px;
+            }
+
+            .focus-task-title {
+                font-size: 24px;
+            }
+
+            .focus-timer {
+                font-size: 48px;
             }
 
             .command-content {
                 width: 95%;
+                margin: 0 var(--space-sm);
+            }
+
+            .chart-label {
+                width: 50px;
+                font-size: 12px;
+            }
+        }
+
+        /* Tablet - Medium devices */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .app-container {
+                max-width: 95%;
+                height: 95vh;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .view-tabs {
+                flex-wrap: wrap;
+            }
+
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .clients-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Desktop - Large devices */
+        @media (min-width: 1025px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .clients-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .task-actions {
+                opacity: 1;
+            }
+
+            .icon-btn, .task-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+
+            .tab {
+                min-height: 44px;
+            }
+        }
+
+        /* High DPI screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
         }
 
@@ -1302,7 +1473,7 @@
                 <!-- Quick Add -->
                 <div class="quick-add card">
                     <div class="quick-add-icon">➕</div>
-                    <input type="text" id="quick-add" placeholder="add task... (try 'Design pitch for tomorrow' or 'Review PR #urgent')" />
+                    <input type="text" id="quick-add" placeholder="add task... (try 'Design pitch tomorrow' or 'Review PR #urgent friday')" />
                 </div>
 
                 <!-- Focus Tasks -->
@@ -1479,10 +1650,16 @@
                 flowScore: 0
             },
             settings: {
-                theme: 'system',
+                theme: 'black',
                 sounds: true,
-                notifications: true
-            }
+                notifications: true,
+                emailReminders: false,
+                reminderEmail: '',
+                autoSave: true,
+                saveInterval: 3000 // 3 seconds
+            },
+            lastSaved: null,
+            saveTimer: null
         };
 
         // Sample data
@@ -1529,12 +1706,29 @@
             updateAnalytics();
             setInterval(updateGreeting, 60000);
 
+            // Start auto-save
+            startAutoSave();
+
             // Add sample tasks if empty
             if (state.tasks.length === 0) {
                 SAMPLE_TASKS.slice(0, 3).forEach((title, i) => {
                     addTask(title, i < 2);
                 });
             }
+
+            // Request notification permission if reminders enabled
+            if (state.settings.emailReminders && 'Notification' in window) {
+                if (Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            }
+
+            // Check for overdue tasks and reschedule reminders
+            state.tasks.forEach(task => {
+                if (task.dueDate && !task.completed && !task.reminderSent) {
+                    scheduleReminder(task);
+                }
+            });
         }
 
         // ===== STATE MANAGEMENT =====
@@ -1547,11 +1741,37 @@
                     state.tasks = data.tasks || [];
                     state.clients = data.clients || SAMPLE_CLIENTS;
                     state.stats = data.stats || state.stats;
+                    state.settings = { ...state.settings, ...(data.settings || {}) };
                 } else {
                     state.clients = SAMPLE_CLIENTS;
                 }
+
+                // Try to restore from backup if main data is corrupted
+                if (state.tasks.length === 0 && state.clients.length === 0) {
+                    const backup = localStorage.getItem(STORAGE_KEY + '_backup');
+                    if (backup) {
+                        const backupData = JSON.parse(backup);
+                        state.tasks = backupData.tasks || [];
+                        state.clients = backupData.clients || SAMPLE_CLIENTS;
+                        state.stats = backupData.stats || state.stats;
+                        console.log('Restored from backup');
+                    }
+                }
             } catch (e) {
                 console.error('Failed to load state:', e);
+                // Try backup
+                try {
+                    const backup = localStorage.getItem(STORAGE_KEY + '_backup');
+                    if (backup) {
+                        const backupData = JSON.parse(backup);
+                        state.tasks = backupData.tasks || [];
+                        state.clients = backupData.clients || SAMPLE_CLIENTS;
+                        state.stats = backupData.stats || state.stats;
+                        console.log('Restored from backup after error');
+                    }
+                } catch (backupError) {
+                    console.error('Backup restore also failed:', backupError);
+                }
             }
         }
 
@@ -1561,33 +1781,118 @@
                     tasks: state.tasks,
                     clients: state.clients,
                     stats: state.stats,
-                    timestamp: Date.now()
+                    settings: state.settings,
+                    timestamp: Date.now(),
+                    version: APP_VERSION
                 };
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                state.lastSaved = Date.now();
+
+                // Show save indicator
+                showSaveIndicator();
+
+                // Also save to backup key every 10 saves
+                const saveCount = parseInt(localStorage.getItem('followw_save_count') || '0') + 1;
+                localStorage.setItem('followw_save_count', saveCount.toString());
+
+                if (saveCount % 10 === 0) {
+                    localStorage.setItem(STORAGE_KEY + '_backup', JSON.stringify(data));
+                }
             } catch (e) {
                 console.error('Failed to save state:', e);
+                showError('Failed to save data. Storage may be full.');
+            }
+        }
+
+        function showSaveIndicator() {
+            // Create or update save indicator
+            let indicator = document.getElementById('save-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'save-indicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    padding: 8px 16px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 8px;
+                    color: white;
+                    font-size: 12px;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    pointer-events: none;
+                    z-index: 9999;
+                `;
+                document.body.appendChild(indicator);
+            }
+
+            const now = new Date();
+            indicator.textContent = `Saved ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+            indicator.style.opacity = '1';
+
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 2000);
+        }
+
+        function showError(message) {
+            alert(message);
+        }
+
+        // Auto-save functionality
+        function startAutoSave() {
+            if (state.settings.autoSave) {
+                if (state.saveTimer) {
+                    clearInterval(state.saveTimer);
+                }
+
+                state.saveTimer = setInterval(() => {
+                    saveState();
+                }, state.settings.saveInterval);
+            }
+        }
+
+        function stopAutoSave() {
+            if (state.saveTimer) {
+                clearInterval(state.saveTimer);
+                state.saveTimer = null;
             }
         }
 
         // ===== TASK OPERATIONS =====
 
         function addTask(title, isFocus = false, client = null) {
+            const dueDate = parseDueDate(title);
+            const cleanTitle = dueDate ? cleanTaskTitle(title) : title;
+
             const task = {
                 id: Date.now() + Math.random(),
-                title,
+                title: cleanTitle,
                 isFocus,
                 completed: false,
                 client,
-                tags: extractTags(title),
+                tags: extractTags(cleanTitle),
                 notes: '',
                 createdAt: Date.now(),
                 timeSpent: 0,
-                project: null
+                project: null,
+                dueDate: dueDate ? dueDate.getTime() : null,
+                reminderSent: false,
+                subtasks: [],
+                recurring: null, // {type: 'daily'|'weekly'|'monthly', interval: 1}
+                priority: isFocus ? 'high' : 'normal'
             };
 
             state.tasks.push(task);
             saveState();
             renderAll();
+
+            // Schedule reminder if due date exists
+            if (dueDate && state.settings.emailReminders) {
+                scheduleReminder(task);
+            }
 
             // Confetti for first task
             if (state.tasks.length === 1 && typeof confetti !== 'undefined') {
@@ -1599,6 +1904,49 @@
             }
         }
 
+        // Email Reminder System (simulated - would need backend in production)
+        function scheduleReminder(task) {
+            if (!task.dueDate || !state.settings.reminderEmail) return;
+
+            const now = Date.now();
+            const dueTime = task.dueDate;
+            const reminderTime = dueTime - (24 * 60 * 60 * 1000); // 24 hours before
+
+            if (reminderTime > now && !task.reminderSent) {
+                // In production, this would call an API endpoint
+                console.log(`Reminder scheduled for: ${task.title} at ${new Date(reminderTime)}`);
+
+                // Show notification permission request
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+
+                // Set browser notification for demo purposes
+                const timeUntilReminder = reminderTime - now;
+                if (timeUntilReminder < 24 * 60 * 60 * 1000) { // Within 24 hours
+                    setTimeout(() => {
+                        showTaskReminder(task);
+                    }, timeUntilReminder);
+                }
+            }
+        }
+
+        function showTaskReminder(task) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('Followw Task Reminder', {
+                    body: `"${task.title}" is due tomorrow`,
+                    icon: '⚡',
+                    tag: task.id
+                });
+            }
+
+            // Also show in-app notification
+            if (!task.reminderSent) {
+                task.reminderSent = true;
+                saveState();
+            }
+        }
+
         function extractTags(title) {
             const tags = [];
             const tagMatch = title.match(/#\w+/g);
@@ -1606,6 +1954,61 @@
                 tags.push(...tagMatch.map(t => t.slice(1)));
             }
             return tags;
+        }
+
+        // Natural Language Date Parser
+        function parseDueDate(text) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const patterns = [
+                { regex: /\btoday\b/i, offset: 0 },
+                { regex: /\btomorrow\b/i, offset: 1 },
+                { regex: /\bmonday\b/i, day: 1 },
+                { regex: /\btuesday\b/i, day: 2 },
+                { regex: /\bwednesday\b/i, day: 3 },
+                { regex: /\bthursday\b/i, day: 4 },
+                { regex: /\bfriday\b/i, day: 5 },
+                { regex: /\bsaturday\b/i, day: 6 },
+                { regex: /\bsunday\b/i, day: 0 },
+                { regex: /\bin (\d+) days?\b/i, capture: true },
+                { regex: /\bnext week\b/i, offset: 7 }
+            ];
+
+            for (const pattern of patterns) {
+                const match = text.match(pattern.regex);
+                if (match) {
+                    if (pattern.offset !== undefined) {
+                        const date = new Date(today);
+                        date.setDate(date.getDate() + pattern.offset);
+                        return date;
+                    } else if (pattern.day !== undefined) {
+                        const date = new Date(today);
+                        const currentDay = date.getDay();
+                        let diff = pattern.day - currentDay;
+                        if (diff <= 0) diff += 7;
+                        date.setDate(date.getDate() + diff);
+                        return date;
+                    } else if (pattern.capture) {
+                        const days = parseInt(match[1]);
+                        const date = new Date(today);
+                        date.setDate(date.getDate() + days);
+                        return date;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        function cleanTaskTitle(title) {
+            // Remove date patterns from title
+            return title
+                .replace(/\b(today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, '')
+                .replace(/\bin \d+ days?\b/gi, '')
+                .replace(/\bnext week\b/gi, '')
+                .replace(/\s+/g, ' ')
+                .trim();
         }
 
         function toggleComplete(id) {
@@ -1764,6 +2167,8 @@
 
                 const isTimerActive = state.activeTimer?.taskId === task.id;
 
+                const dueDateHtml = task.dueDate ? formatDueDate(task.dueDate) : '';
+
                 div.innerHTML = `
                     <div class="checkbox" onclick="toggleComplete(${task.id})"></div>
                     <div class="task-content" onclick="openTaskDetail(${task.id})">
@@ -1771,6 +2176,7 @@
                         <div class="task-meta">
                             ${task.client ? `<span class="task-client">@${task.client}</span>` : ''}
                             ${task.tags.map(tag => `<span class="task-tag">#${tag}</span>`).join('')}
+                            ${dueDateHtml}
                             ${task.timeSpent > 0 ? `<span class="task-time">⏱️ ${formatTime(task.timeSpent)}</span>` : ''}
                         </div>
                     </div>
@@ -2244,6 +2650,38 @@ All shortcuts work with Ctrl on Windows/Linux.
                 return `${hours}h ${mins}m`;
             }
             return `${mins}m`;
+        }
+
+        function formatDueDate(timestamp) {
+            const date = new Date(timestamp);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const dueDay = new Date(date);
+            dueDay.setHours(0, 0, 0, 0);
+
+            const diffTime = dueDay - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            let color = 'var(--color-text-secondary)';
+            let text = '';
+
+            if (diffDays < 0) {
+                color = 'var(--color-error)';
+                text = 'Overdue';
+            } else if (diffDays === 0) {
+                color = 'var(--color-warning)';
+                text = 'Due today';
+            } else if (diffDays === 1) {
+                text = 'Due tomorrow';
+            } else if (diffDays <= 7) {
+                text = `Due in ${diffDays} days`;
+            } else {
+                const options = { month: 'short', day: 'numeric' };
+                text = `Due ${date.toLocaleDateString('en-US', options)}`;
+            }
+
+            return `<span class="task-due" style="color: ${color}">📅 ${text}</span>`;
         }
 
         function escapeHtml(text) {
