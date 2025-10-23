@@ -1363,6 +1363,383 @@
             }
         }
 
+        /* Kanban Board */
+        .board-container {
+            display: flex;
+            gap: var(--space-md);
+            overflow-x: auto;
+            padding-bottom: var(--space-md);
+            height: 100%;
+        }
+
+        .board-column {
+            min-width: 280px;
+            max-width: 320px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--gray-100);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+        }
+
+        .board-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .board-column-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+        }
+
+        .board-column-count {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            background: var(--gray-200);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .board-cards {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .board-card {
+            background: var(--color-card);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .board-card:hover {
+            border-color: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .board-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .board-card-emoji {
+            font-size: 20px;
+            margin-bottom: var(--space-xs);
+        }
+
+        .board-card-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            line-height: 1.4;
+        }
+
+        .board-card-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .board-card-badge {
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .board-card-progress {
+            width: 100%;
+            height: 3px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: var(--space-sm);
+        }
+
+        .board-card-progress-fill {
+            height: 100%;
+            background: white;
+            transition: width var(--transition-normal);
+        }
+
+        /* Task Detail Modal */
+        .task-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9500;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-lg);
+        }
+
+        .task-modal.active {
+            display: flex;
+            animation: modalFade 0.2s ease;
+        }
+
+        .task-modal-content {
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            background: var(--color-card);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: commandSlide 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .task-modal-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            gap: var(--space-md);
+            align-items: flex-start;
+        }
+
+        .task-modal-emoji-picker {
+            width: 50px;
+            height: 50px;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .task-modal-emoji-picker:hover {
+            background: var(--gray-200);
+        }
+
+        .task-modal-title-section {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-modal-title-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-text);
+            outline: none;
+            font-family: inherit;
+            padding: 4px 0;
+        }
+
+        .task-modal-meta-row {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .task-modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .task-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+        }
+
+        .task-modal-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .task-modal-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .task-modal-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: var(--space-md);
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+
+        .task-modal-textarea:focus {
+            border-color: var(--gray-300);
+            background: var(--gray-50);
+        }
+
+        .task-modal-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .task-modal-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm);
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .task-modal-checkbox-item:hover {
+            background: var(--gray-200);
+        }
+
+        .task-modal-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .task-modal-checkbox-item.completed {
+            opacity: 0.5;
+        }
+
+        .task-modal-checkbox-item.completed span {
+            text-decoration: line-through;
+        }
+
+        .task-modal-footer {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-modal-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .task-modal-select {
+            padding: 8px 12px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+
+        .task-modal-select:hover {
+            background: var(--gray-200);
+        }
+
+        .task-modal-input-small {
+            width: 100px;
+            padding: 8px 12px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-size: 13px;
+            outline: none;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: var(--space-sm) 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: white;
+            transition: width var(--transition-normal);
+        }
+
+        /* Emoji Picker Dropdown */
+        .emoji-picker-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: var(--space-xs);
+            padding: var(--space-sm);
+            background: var(--color-card);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            max-width: 300px;
+        }
+
+        .emoji-picker-dropdown.active {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+        }
+
+        .emoji-option {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .emoji-option:hover {
+            background: var(--gray-200);
+            transform: scale(1.1);
+        }
+
         .hidden {
             display: none !important;
         }
@@ -1390,6 +1767,10 @@
                 <button class="tab active" data-view="today">
                     <span>☀️</span>
                     <span>today</span>
+                </button>
+                <button class="tab" data-view="board">
+                    <span>📋</span>
+                    <span>board</span>
                 </button>
                 <button class="tab" data-view="tasks">
                     <span>✓</span>
@@ -1514,6 +1895,13 @@
                 </div>
             </div>
 
+            <!-- Board View -->
+            <div id="board-view" class="view">
+                <div class="board-container" id="boardContainer">
+                    <!-- Columns will be dynamically generated -->
+                </div>
+            </div>
+
             <!-- All Tasks View -->
             <div id="tasks-view" class="view">
                 <div class="section-header">
@@ -1599,6 +1987,71 @@
             <h2 class="focus-task-title" id="focusTaskTitle">Design Landing Page</h2>
             <div class="focus-timer" id="focusTimer">0:00</div>
             <button class="btn btn-primary" onclick="toggleFocusMode()">Exit Focus Mode</button>
+        </div>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div class="task-modal" id="taskModal">
+        <div class="task-modal-content" onclick="event.stopPropagation()">
+            <div class="task-modal-header">
+                <div class="task-modal-emoji-picker" id="taskEmojiPicker" onclick="toggleEmojiPicker()">
+                    <span id="taskEmoji">📝</span>
+                </div>
+                <div class="task-modal-title-section">
+                    <input type="text" class="task-modal-title-input" id="taskModalTitle" placeholder="Task title..." />
+                    <div class="task-modal-meta-row">
+                        <div class="task-modal-meta-item">
+                            <span>Created:</span>
+                            <span id="taskCreatedDate">-</span>
+                        </div>
+                        <div class="task-modal-meta-item">
+                            <span>Time spent:</span>
+                            <span id="taskTimeSpent">0m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-modal-body">
+                <div class="task-modal-section">
+                    <div class="task-modal-section-title">Description</div>
+                    <textarea class="task-modal-textarea" id="taskModalNotes" placeholder="Add notes, links, or paste code...&#10;&#10;Supports markdown:&#10;- [ ] Checklist item&#10;- [x] Completed item&#10;&#10;```javascript&#10;// Code blocks&#10;```"></textarea>
+                </div>
+
+                <div class="task-modal-section">
+                    <div class="task-modal-section-title">Subtasks (<span id="subtaskProgress">0/0</span>)</div>
+                    <div class="task-modal-checkboxes" id="taskSubtasks">
+                        <!-- Subtasks will be dynamically added -->
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: var(--space-sm);" onclick="addSubtask()">+ Add Subtask</button>
+                </div>
+            </div>
+
+            <div class="task-modal-footer">
+                <div class="task-modal-actions">
+                    <select class="task-modal-select" id="taskModalStatus">
+                        <option value="backlog">Backlog</option>
+                        <option value="todo">To Do</option>
+                        <option value="inprogress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+
+                    <select class="task-modal-select" id="taskModalPriority">
+                        <option value="low">Low</option>
+                        <option value="normal">Normal</option>
+                        <option value="high">High</option>
+                    </select>
+
+                    <input type="number" class="task-modal-input-small" id="taskModalEstimate" placeholder="Est. hours" min="0" step="0.5" />
+
+                    <input type="date" class="task-modal-input-small" id="taskModalDueDate" style="width: 150px;" />
+                </div>
+
+                <div class="task-modal-actions">
+                    <button class="btn btn-secondary" onclick="deleteTaskFromModal()">Delete</button>
+                    <button class="btn btn-primary" onclick="closeTaskModal()">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1863,15 +2316,17 @@
 
         // ===== TASK OPERATIONS =====
 
-        function addTask(title, isFocus = false, client = null) {
+        function addTask(title, isFocus = false, client = null, status = 'todo') {
             const dueDate = parseDueDate(title);
             const cleanTitle = dueDate ? cleanTaskTitle(title) : title;
 
             const task = {
                 id: Date.now() + Math.random(),
                 title: cleanTitle,
+                emoji: getRandomEmoji(),
                 isFocus,
                 completed: false,
+                status: status || (isFocus ? 'inprogress' : 'todo'), // backlog, todo, inprogress, completed
                 client,
                 tags: extractTags(cleanTitle),
                 notes: '',
@@ -1880,9 +2335,10 @@
                 project: null,
                 dueDate: dueDate ? dueDate.getTime() : null,
                 reminderSent: false,
-                subtasks: [],
-                recurring: null, // {type: 'daily'|'weekly'|'monthly', interval: 1}
-                priority: isFocus ? 'high' : 'normal'
+                subtasks: [], // {id, text, completed}
+                recurring: null,
+                priority: isFocus ? 'high' : 'normal', // low, normal, high
+                estimatedHours: null
             };
 
             state.tasks.push(task);
@@ -2128,6 +2584,7 @@
 
         function renderAll() {
             renderTasks();
+            renderBoard();
             updateStats();
             renderClients();
             updateAnalytics();
@@ -2380,7 +2837,7 @@
         }
 
         function openTaskDetail(taskId) {
-            console.log('Opening task detail:', taskId);
+            openTaskModal(taskId);
         }
 
         function toggleFocusMode() {
@@ -2414,8 +2871,9 @@
 
             const commands = [
                 { icon: '➕', title: 'Add Task', desc: 'Create a new task • ⌘N', action: 'addTask' },
+                { icon: '📋', title: 'Board View', desc: 'Kanban board • ⌘2', action: 'board' },
                 { icon: '🎯', title: 'Focus Mode', desc: 'Enter deep focus • ⌘F', action: 'focusMode' },
-                { icon: '📊', title: 'View Analytics', desc: 'See your stats • ⌘4', action: 'analytics' },
+                { icon: '📊', title: 'View Analytics', desc: 'See your stats • ⌘5', action: 'analytics' },
                 { icon: '⤓', title: 'Export Data', desc: 'Download your data', action: 'export' },
                 { icon: '⚡', title: 'Keyboard Shortcuts', desc: 'View all shortcuts', action: 'shortcuts' }
             ];
@@ -2444,6 +2902,9 @@
                 case 'addTask':
                     document.getElementById('quick-add').focus();
                     break;
+                case 'board':
+                    switchView('board');
+                    break;
                 case 'focusMode':
                     toggleFocusMode();
                     break;
@@ -2467,12 +2928,19 @@ Keyboard Shortcuts:
 ⌘N - New Task
 ⌘F - Focus Mode
 ⌘1 - Today View
-⌘2 - All Tasks
-⌘3 - Clients
-⌘4 - Analytics
+⌘2 - Board View (Kanban)
+⌘3 - All Tasks
+⌘4 - Clients
+⌘5 - Analytics
 Esc - Close Overlays
 
 All shortcuts work with Ctrl on Windows/Linux.
+
+Board View Features:
+- Drag & drop tasks between columns
+- Click any card to view details
+- Add subtasks & checklists
+- Set priorities & estimates
             `.trim();
 
             alert(shortcuts);
@@ -2587,10 +3055,10 @@ All shortcuts work with Ctrl on Windows/Linux.
                     document.getElementById('quick-add').focus();
                 }
 
-                // View switching: Cmd/Ctrl+1,2,3,4
-                if ((e.metaKey || e.ctrlKey) && ['1', '2', '3', '4'].includes(e.key)) {
+                // View switching: Cmd/Ctrl+1,2,3,4,5
+                if ((e.metaKey || e.ctrlKey) && ['1', '2', '3', '4', '5'].includes(e.key)) {
                     e.preventDefault();
-                    const views = ['today', 'tasks', 'clients', 'analytics'];
+                    const views = ['today', 'board', 'tasks', 'clients', 'analytics'];
                     switchView(views[parseInt(e.key) - 1]);
                 }
 
@@ -2599,8 +3067,11 @@ All shortcuts work with Ctrl on Windows/Linux.
                     const palette = document.getElementById('commandPalette');
                     const focusMode = document.getElementById('focusMode');
                     const reflection = document.getElementById('reflection');
+                    const taskModal = document.getElementById('taskModal');
 
-                    if (palette.classList.contains('active')) {
+                    if (taskModal.classList.contains('active')) {
+                        closeTaskModal();
+                    } else if (palette.classList.contains('active')) {
                         toggleCommandPalette();
                     } else if (focusMode.classList.contains('active')) {
                         toggleFocusMode();
@@ -2705,6 +3176,315 @@ All shortcuts work with Ctrl on Windows/Linux.
             saveState();
             renderClients();
         }
+
+        function filterTasks(filter) {
+            console.log('Filtering tasks:', filter);
+        }
+
+        // ===== BOARD VIEW =====
+
+        const BOARD_COLUMNS = [
+            { id: 'backlog', title: 'Backlog', icon: '📥' },
+            { id: 'todo', title: 'To Do', icon: '📝' },
+            { id: 'inprogress', title: 'In Progress', icon: '⚡' },
+            { id: 'completed', title: 'Completed', icon: '✅' }
+        ];
+
+        function renderBoard() {
+            const container = document.getElementById('boardContainer');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            BOARD_COLUMNS.forEach(column => {
+                const tasks = state.tasks.filter(t => t.status === column.id);
+
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'board-column';
+                columnDiv.dataset.status = column.id;
+
+                columnDiv.innerHTML = `
+                    <div class="board-column-header">
+                        <div class="board-column-title">${column.icon} ${column.title}</div>
+                        <div class="board-column-count">${tasks.length}</div>
+                    </div>
+                    <div class="board-cards" id="cards-${column.id}"></div>
+                `;
+
+                container.appendChild(columnDiv);
+
+                // Render cards
+                const cardsContainer = columnDiv.querySelector('.board-cards');
+                tasks.forEach(task => {
+                    const card = createBoardCard(task);
+                    cardsContainer.appendChild(card);
+                });
+
+                // Setup drop zone
+                setupDropZone(cardsContainer, column.id);
+            });
+        }
+
+        function createBoardCard(task) {
+            const div = document.createElement('div');
+            div.className = 'board-card';
+            div.draggable = true;
+            div.dataset.taskId = task.id;
+
+            const progress = task.subtasks.length > 0 ?
+                (task.subtasks.filter(st => st.completed).length / task.subtasks.length * 100) : 0;
+
+            const metaItems = [];
+            if (task.client) metaItems.push(`<span class="board-card-badge">@${task.client}</span>`);
+            if (task.priority !== 'normal') {
+                metaItems.push(`<span class="board-card-badge">${task.priority}</span>`);
+            }
+            if (task.estimatedHours) metaItems.push(`<span>⏱️ ${task.estimatedHours}h</span>`);
+            if (task.dueDate) {
+                const daysUntil = Math.ceil((task.dueDate - Date.now()) / (1000 * 60 * 60 * 24));
+                if (daysUntil <= 3) metaItems.push(`<span>📅 ${daysUntil}d</span>`);
+            }
+
+            div.innerHTML = `
+                ${task.emoji ? `<div class="board-card-emoji">${task.emoji}</div>` : ''}
+                <div class="board-card-title">${escapeHtml(task.title)}</div>
+                <div class="board-card-meta">
+                    ${metaItems.join('')}
+                    ${task.subtasks.length > 0 ? `<span>☑️ ${task.subtasks.filter(st => st.completed).length}/${task.subtasks.length}</span>` : ''}
+                </div>
+                ${task.subtasks.length > 0 ? `
+                    <div class="board-card-progress">
+                        <div class="board-card-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                ` : ''}
+            `;
+
+            // Click to open modal
+            div.addEventListener('click', () => openTaskModal(task.id));
+
+            // Drag events
+            div.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('taskId', task.id);
+                div.classList.add('dragging');
+            });
+
+            div.addEventListener('dragend', () => {
+                div.classList.remove('dragging');
+            });
+
+            return div;
+        }
+
+        function setupDropZone(container, status) {
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            container.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const taskId = parseFloat(e.dataTransfer.getData('taskId'));
+                const task = state.tasks.find(t => t.id === taskId);
+
+                if (task && task.status !== status) {
+                    task.status = status;
+                    if (status === 'completed') {
+                        task.completed = true;
+                        state.stats.completed++;
+                    } else if (task.completed) {
+                        task.completed = false;
+                        state.stats.completed = Math.max(0, state.stats.completed - 1);
+                    }
+                    saveState();
+                    renderBoard();
+                    updateStats();
+                }
+            });
+        }
+
+        // ===== TASK MODAL =====
+
+        let currentTaskId = null;
+
+        function openTaskModal(taskId) {
+            const task = state.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            currentTaskId = taskId;
+
+            // Populate modal
+            document.getElementById('taskModalTitle').value = task.title;
+            document.getElementById('taskEmoji').textContent = task.emoji || '📝';
+            document.getElementById('taskModalNotes').value = task.notes || '';
+            document.getElementById('taskModalStatus').value = task.status;
+            document.getElementById('taskModalPriority').value = task.priority;
+            document.getElementById('taskModalEstimate').value = task.estimatedHours || '';
+
+            if (task.dueDate) {
+                const date = new Date(task.dueDate);
+                document.getElementById('taskModalDueDate').value = date.toISOString().split('T')[0];
+            } else {
+                document.getElementById('taskModalDueDate').value = '';
+            }
+
+            document.getElementById('taskCreatedDate').textContent =
+                new Date(task.createdAt).toLocaleDateString();
+            document.getElementById('taskTimeSpent').textContent = formatTime(task.timeSpent);
+
+            renderSubtasks(task);
+
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function closeTaskModal() {
+            if (!currentTaskId) return;
+
+            const task = state.tasks.find(t => t.id === currentTaskId);
+            if (task) {
+                // Save changes
+                task.title = document.getElementById('taskModalTitle').value;
+                task.notes = document.getElementById('taskModalNotes').value;
+                task.status = document.getElementById('taskModalStatus').value;
+                task.priority = document.getElementById('taskModalPriority').value;
+                task.estimatedHours = parseFloat(document.getElementById('taskModalEstimate').value) || null;
+
+                const dueDateValue = document.getElementById('taskModalDueDate').value;
+                task.dueDate = dueDateValue ? new Date(dueDateValue).getTime() : null;
+
+                saveState();
+                renderAll();
+            }
+
+            document.getElementById('taskModal').classList.remove('active');
+            currentTaskId = null;
+        }
+
+        function deleteTaskFromModal() {
+            if (currentTaskId && confirm('Delete this task?')) {
+                deleteTask(currentTaskId);
+                closeTaskModal();
+            }
+        }
+
+        // Subtasks
+        function renderSubtasks(task) {
+            const container = document.getElementById('taskSubtasks');
+            container.innerHTML = '';
+
+            if (!task.subtasks) task.subtasks = [];
+
+            task.subtasks.forEach((subtask, index) => {
+                const div = document.createElement('div');
+                div.className = 'task-modal-checkbox-item' + (subtask.completed ? ' completed' : '');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = subtask.completed;
+                checkbox.onchange = () => toggleSubtask(task.id, index);
+
+                const span = document.createElement('span');
+                span.textContent = subtask.text;
+                span.style.flex = '1';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '×';
+                deleteBtn.className = 'icon-btn';
+                deleteBtn.style.cssText = 'width: 24px; height: 24px; font-size: 18px;';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeSubtask(task.id, index);
+                };
+
+                div.appendChild(checkbox);
+                div.appendChild(span);
+                div.appendChild(deleteBtn);
+
+                container.appendChild(div);
+            });
+
+            updateSubtaskProgress(task);
+        }
+
+        function addSubtask() {
+            const task = state.tasks.find(t => t.id === currentTaskId);
+            if (!task) return;
+
+            const text = prompt('Subtask:');
+            if (!text) return;
+
+            if (!task.subtasks) task.subtasks = [];
+            task.subtasks.push({
+                id: Date.now() + Math.random(),
+                text,
+                completed: false
+            });
+
+            saveState();
+            renderSubtasks(task);
+        }
+
+        function toggleSubtask(taskId, index) {
+            const task = state.tasks.find(t => t.id === taskId);
+            if (!task || !task.subtasks[index]) return;
+
+            task.subtasks[index].completed = !task.subtasks[index].completed;
+            saveState();
+            renderSubtasks(task);
+            renderBoard();
+        }
+
+        function removeSubtask(taskId, index) {
+            const task = state.tasks.find(t => t.id === taskId);
+            if (!task || !task.subtasks[index]) return;
+
+            task.subtasks.splice(index, 1);
+            saveState();
+            renderSubtasks(task);
+        }
+
+        function updateSubtaskProgress(task) {
+            if (!task.subtasks || task.subtasks.length === 0) {
+                document.getElementById('subtaskProgress').textContent = '0/0';
+                return;
+            }
+
+            const completed = task.subtasks.filter(st => st.completed).length;
+            document.getElementById('subtaskProgress').textContent = `${completed}/${task.subtasks.length}`;
+        }
+
+        // Emoji picker
+        const EMOJIS = ['📝', '💡', '🎯', '⚡', '🔥', '✨', '🚀', '💻', '🎨', '📊', '🔧', '📱', '🌟', '💼', '📈', '🎉'];
+
+        function getRandomEmoji() {
+            return EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+        }
+
+        function toggleEmojiPicker() {
+            // Simple emoji change for now
+            const task = state.tasks.find(t => t.id === currentTaskId);
+            if (!task) return;
+
+            const currentIndex = EMOJIS.indexOf(task.emoji);
+            const nextIndex = (currentIndex + 1) % EMOJIS.length;
+            task.emoji = EMOJIS[nextIndex];
+
+            document.getElementById('taskEmoji').textContent = task.emoji;
+            saveState();
+            renderBoard();
+        }
+
+        // Close modal on background click
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('taskModal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeTaskModal();
+                    }
+                });
+            }
+        });
 
         function filterTasks(filter) {
             console.log('Filtering tasks:', filter);
