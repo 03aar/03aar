@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elysium - The Browser That Isn't a Browser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg-primary: #FFFFFF;
+            --color-nadoo: #E9E9EA;
+            --color-divider: #D9D9DA;
+            --color-text-primary: #121212;
+            --color-text-secondary: rgba(0, 0, 0, 0.55);
+            --color-accent: #007AFF;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            overflow: hidden;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Rail */
+        .left-rail {
+            width: 72px;
+            background: var(--color-nadoo);
+            border-right: 1px solid var(--color-divider);
+            padding: var(--space-lg) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-lg);
+            transition: width 0.2s;
+        }
+
+        .left-rail:hover {
+            width: 220px;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s;
+            color: var(--color-text-secondary);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: white;
+            color: var(--color-accent);
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Home Canvas */
+        .home-canvas {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(233, 233, 234, 0.3) 0%, transparent 70%);
+        }
+
+        .intent-field {
+            width: 600px;
+            padding: var(--space-md) var(--space-lg);
+            font-size: 18px;
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.15s;
+        }
+
+        .intent-field:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1), 0 12px 48px rgba(0, 0, 0, 0.08);
+        }
+
+        .hint {
+            margin-top: var(--space-lg);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        /* Research Mode */
+        .research-mode {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .research-mode.active {
+            display: flex;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(233, 233, 234, 0.6);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--color-divider);
+        }
+
+        .url-bar {
+            flex: 1;
+            max-width: 800px;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            color: var(--color-text-secondary);
+        }
+
+        /* Context Assistant */
+        .context-assistant {
+            width: 360px;
+            background: white;
+            border-left: 1px solid var(--color-divider);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .assistant-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-divider);
+            font-weight: 600;
+        }
+
+        .chat-area {
+            flex: 1;
+            padding: var(--space-lg);
+            overflow-y: auto;
+        }
+
+        .message {
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            border-radius: var(--radius-md);
+            background: #f9f9f9;
+        }
+
+        .message.user {
+            background: rgba(0, 122, 255, 0.1);
+            margin-left: auto;
+            max-width: 85%;
+        }
+
+        .input-area {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--color-divider);
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+        }
+
+        .send-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-canvas > * {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            text-align: center;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        .info-banner a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        🎉 <strong>Elysium Browser Demo</strong> - This is an interactive preview. Full desktop app available on GitHub →
+        <a href="https://github.com/03aar/03aar/tree/claude/elysium-ui-blueprint-011CUQYKCVDQ6xsETjBZuMpb/elysium-browser">View Source</a>
+    </div>
+
+    <div class="app" style="margin-top: 48px;">
+        <!-- Left Rail -->
+        <aside class="left-rail">
+            <div class="brand">E</div>
+            <div class="nav-item active" data-mode="home" title="Home">🏠</div>
+            <div class="nav-item" data-mode="research" title="Research">🔍</div>
+            <div class="nav-item" data-mode="write" title="Write">✍️</div>
+            <div class="nav-item" data-mode="automate" title="Automate">⚡</div>
+            <div class="nav-item" data-mode="memory" title="Memory">💭</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Home Canvas -->
+            <div class="home-canvas" id="home-mode">
+                <input
+                    type="text"
+                    class="intent-field"
+                    placeholder="What would you like to explore?"
+                    id="intent-input"
+                >
+                <p class="hint">Type a question, paste a link, or describe what you want to create</p>
+            </div>
+
+            <!-- Research Mode -->
+            <div class="research-mode" id="research-mode">
+                <div class="topbar">
+                    <input type="text" class="url-bar" placeholder="Search or enter address..." value="https://example.com">
+                </div>
+                <div class="content">
+                    <div style="text-align: center;">
+                        <h2 style="margin-bottom: 16px;">Webpage Content</h2>
+                        <p>In the full desktop app, this area displays an actual Chromium webview.</p>
+                        <p style="margin-top: 8px; font-size: 12px;">Try typing in the intent field to switch modes!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Context Assistant -->
+        <aside class="context-assistant">
+            <div class="assistant-header">Context</div>
+            <div class="chat-area" id="chat-area">
+                <div class="message">
+                    👋 Hello! I'm your Elysium assistant. Try these:
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>"Summarize this page"</li>
+                        <li>"Write an email about..."</li>
+                        <li>"Search for AI trends"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" class="chat-input" placeholder="Ask anything..." id="chat-input">
+                <button class="send-btn" id="send-btn">Send</button>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Intent detection and mode switching
+        const modes = {
+            home: document.getElementById('home-mode'),
+            research: document.getElementById('research-mode')
+        };
+
+        const navItems = document.querySelectorAll('.nav-item');
+        const intentInput = document.getElementById('intent-input');
+        const chatInput = document.getElementById('chat-input');
+        const chatArea = document.getElementById('chat-area');
+        const sendBtn = document.getElementById('send-btn');
+
+        let currentMode = 'home';
+
+        function switchMode(mode) {
+            // Hide all modes
+            Object.values(modes).forEach(m => m && (m.style.display = 'none'));
+
+            // Show selected mode
+            if (modes[mode]) {
+                modes[mode].style.display = mode === 'home' ? 'flex' : 'flex';
+                modes[mode].classList.add('active');
+                currentMode = mode;
+            }
+
+            // Update nav active state
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.mode === mode) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Nav click handlers
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                switchMode(item.dataset.mode);
+            });
+        });
+
+        // Intent field handler
+        intentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const input = intentInput.value.toLowerCase();
+
+                // Simple intent detection
+                if (input.includes('http') || input.includes('www') || input.includes('.com')) {
+                    switchMode('research');
+                    addMessage('assistant', `Opening ${input}...`);
+                } else if (input.includes('write') || input.includes('draft')) {
+                    addMessage('assistant', `Switching to Write Mode for: "${input}"`);
+                } else {
+                    switchMode('research');
+                    addMessage('assistant', `Searching for: "${input}"`);
+                }
+
+                intentInput.value = '';
+            }
+        });
+
+        // Chat functionality
+        function addMessage(type, text) {
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            chatArea.appendChild(message);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function handleChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage('user', text);
+            chatInput.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "I understand. In the full desktop app, I would process this with AI and provide a detailed response.",
+                    "That's an interesting question! The full Elysium app connects to AI providers like OpenAI or Claude for real-time assistance.",
+                    "Great! In production, this would trigger the AI service to help you with that task.",
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                addMessage('assistant', response);
+            }, 500);
+        }
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleChat();
+        });
+
+        sendBtn.addEventListener('click', handleChat);
+
+        // Initialize
+        switchMode('home');
+        intentInput.focus();
+    </script>
+</body>
+</html>
