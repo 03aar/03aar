@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elysium - The Browser That Isn't a Browser</title>
+    <meta name="description" content="An intent-first, AI-powered browser that understands your purpose and adapts its interface accordingly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Elysium Design System */
+        :root {
+            --color-bg-primary: #FFFFFF;
+            --color-bg-secondary: #E9E9EA;
+            --color-bg-tertiary: #F9F9F9;
+            --color-nadoo: #E9E9EA;
+            --color-divider: #D9D9DA;
+            --color-text-primary: #121212;
+            --color-text-secondary: rgba(0, 0, 0, 0.55);
+            --color-text-tertiary: rgba(0, 0, 0, 0.35);
+            --color-accent: #007AFF;
+            --color-accent-hover: #0051D5;
+            --color-accent-light: rgba(0, 122, 255, 0.1);
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.03);
+            --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.04);
+            --shadow-floating: 0 12px 48px rgba(0, 0, 0, 0.06);
+            --transition-fast: 60ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
+            --transition-base: 100ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
+            --transition-slow: 150ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* App Layout */
+        .app {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Left Rail */
+        .left-rail {
+            width: 72px;
+            background: var(--color-nadoo);
+            border-right: 1px solid var(--color-divider);
+            padding: var(--space-lg) 0;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.2s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        .left-rail:hover {
+            width: 220px;
+        }
+
+        .rail-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: 0 var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .left-rail:hover .brand-name {
+            opacity: 1;
+        }
+
+        .rail-nav {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            padding: 0 var(--space-md);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--color-text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--color-bg-primary);
+            color: var(--color-accent);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-label {
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .left-rail:hover .nav-label {
+            opacity: 1;
+        }
+
+        .rail-spacer {
+            flex: 1;
+        }
+
+        .privacy-indicator {
+            padding: var(--space-md);
+            margin: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+        }
+
+        .privacy-dot {
+            width: 6px;
+            height: 6px;
+            background: #34C759;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-container {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+        }
+
+        .mode-container.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Home Canvas */
+        .home-canvas {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: var(--color-bg-primary);
+        }
+
+        .ambient-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(233, 233, 234, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+            transition: all 0.5s;
+        }
+
+        .home-canvas.focused .ambient-bg {
+            background: radial-gradient(circle at center, rgba(0, 122, 255, 0.03) 0%, transparent 70%);
+        }
+
+        .home-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 680px;
+            padding: 0 var(--space-xl);
+        }
+
+        .intent-field-wrapper {
+            width: 100%;
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md) var(--space-lg);
+            transition: all var(--transition-slow);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .intent-field-wrapper:focus-within {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-light), var(--shadow-floating);
+            transform: scale(1.02);
+        }
+
+        .intent-input {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        .intent-input::placeholder {
+            color: var(--color-text-secondary);
+            font-weight: 400;
+        }
+
+        .hint-text {
+            text-align: center;
+            margin-top: var(--space-lg);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            transition: opacity 0.3s;
+        }
+
+        .home-canvas.focused .hint-text {
+            opacity: 0;
+        }
+
+        .home-actions {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-sm);
+            background: rgba(233, 233, 234, 0.6);
+            backdrop-filter: blur(24px);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .home-action-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 20px;
+        }
+
+        .home-action-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--color-text-primary);
+            transform: scale(1.1);
+        }
+
+        /* Research Mode */
+        .research-mode {
+            background: var(--color-bg-primary);
+        }
+
+        .session-tiles {
+            padding: var(--space-md) var(--space-lg);
+            background: var(--color-bg-tertiary);
+            border-bottom: 1px solid var(--color-divider);
+            display: flex;
+            gap: var(--space-sm);
+            overflow-x: auto;
+        }
+
+        .session-tile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .session-tile:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .session-tile.active {
+            background: var(--color-accent-light);
+            border-color: var(--color-accent);
+        }
+
+        .tile-icon {
+            font-size: 16px;
+        }
+
+        .tile-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+
+        .tile-close {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            opacity: 0;
+            transition: all var(--transition-fast);
+            font-size: 16px;
+            border-radius: var(--radius-sm);
+        }
+
+        .session-tile:hover .tile-close {
+            opacity: 1;
+        }
+
+        .tile-close:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--color-text-primary);
+        }
+
+        .new-session-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-bg-primary);
+            border: 1px dashed var(--color-divider);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 20px;
+        }
+
+        .new-session-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background: var(--color-accent-light);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(233, 233, 234, 0.6);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--color-divider);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 16px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--color-text-primary);
+        }
+
+        .url-bar-wrapper {
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .url-bar {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--color-text-primary);
+            outline: none;
+            transition: all var(--transition-base);
+        }
+
+        .url-bar:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-light);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .webview-container {
+            flex: 1;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .webview-placeholder {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--color-text-secondary);
+        }
+
+        .webview-placeholder h3 {
+            font-size: 24px;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        /* Write Mode */
+        .write-mode {
+            background: var(--color-bg-primary);
+        }
+
+        .write-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            background: var(--color-bg-tertiary);
+            border-bottom: 1px solid var(--color-divider);
+        }
+
+        .document-title {
+            font-size: 24px;
+            font-weight: 600;
+            padding: var(--space-sm);
+            border: none;
+            background: transparent;
+            color: var(--color-text-primary);
+            outline: none;
+            border-radius: var(--radius-sm);
+            transition: background var(--transition-base);
+        }
+
+        .document-title:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: var(--space-lg);
+        }
+
+        .ai-assists {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .assist-btn {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .assist-btn:hover {
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+            background: var(--color-accent-light);
+        }
+
+        .write-editor-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .write-editor {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-3xl) var(--space-xl);
+        }
+
+        .editor-textarea {
+            width: 100%;
+            min-height: 400px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            border: none;
+            outline: none;
+            resize: none;
+            background: transparent;
+        }
+
+        .editor-stats {
+            display: flex;
+            gap: var(--space-lg);
+            padding-top: var(--space-lg);
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+            border-top: 1px solid var(--color-divider);
+        }
+
+        /* Context Assistant */
+        .context-assistant {
+            width: 360px;
+            background: var(--color-bg-primary);
+            border-left: 1px solid var(--color-divider);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-divider);
+        }
+
+        .assistant-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .assistant-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 16px;
+        }
+
+        .assistant-close:hover {
+            background: var(--color-nadoo);
+            color: var(--color-text-primary);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            padding: var(--space-lg);
+        }
+
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--color-bg-tertiary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .quick-action-btn:hover {
+            background: var(--color-nadoo);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 24px;
+        }
+
+        .action-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .chat-message {
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            max-width: 85%;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            background: var(--color-accent-light);
+            color: var(--color-text-primary);
+        }
+
+        .chat-message.assistant {
+            align-self: flex-start;
+            background: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+        }
+
+        .message-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .input-area {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-lg);
+            border-top: 1px solid var(--color-divider);
+            background: var(--color-bg-tertiary);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--color-text-primary);
+            outline: none;
+            transition: all var(--transition-base);
+        }
+
+        .chat-input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-light);
+        }
+
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-accent);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 16px;
+        }
+
+        .send-btn:hover {
+            background: var(--color-accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* Mode Placeholders */
+        .mode-placeholder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3xl);
+            text-align: center;
+        }
+
+        .mode-placeholder h2 {
+            font-size: 32px;
+            margin-bottom: var(--space-md);
+        }
+
+        .mode-placeholder p {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            max-width: 500px;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            z-index: 10000;
+            font-size: 14px;
+            box-shadow: var(--shadow-panel);
+        }
+
+        .info-banner a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .info-banner a:hover {
+            opacity: 0.8;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-text-tertiary);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .context-assistant {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .left-rail {
+                width: 60px;
+            }
+            .left-rail:hover {
+                width: 60px;
+            }
+            .brand-name, .nav-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="info-banner">
+        🚀 <strong>Elysium Browser</strong> - The Browser That Isn't a Browser | Production-Ready Demo |
+        <a href="https://github.com/03aar/03aar/tree/claude/elysium-ui-blueprint-011CUQYKCVDQ6xsETjBZuMpb" target="_blank">View Source on GitHub</a>
+    </div>
+
+    <div class="app" style="margin-top: 44px;">
+        <!-- Left Rail -->
+        <aside class="left-rail">
+            <div class="rail-brand">
+                <div class="brand-icon">E</div>
+                <div class="brand-name">Elysium</div>
+            </div>
+
+            <nav class="rail-nav">
+                <div class="nav-item active" data-mode="home">
+                    <div class="nav-icon">🏠</div>
+                    <div class="nav-label">Home</div>
+                </div>
+                <div class="nav-item" data-mode="research">
+                    <div class="nav-icon">🔍</div>
+                    <div class="nav-label">Research</div>
+                </div>
+                <div class="nav-item" data-mode="write">
+                    <div class="nav-icon">✍️</div>
+                    <div class="nav-label">Write</div>
+                </div>
+                <div class="nav-item" data-mode="automate">
+                    <div class="nav-icon">⚡</div>
+                    <div class="nav-label">Automate</div>
+                </div>
+                <div class="nav-item" data-mode="memory">
+                    <div class="nav-icon">💭</div>
+                    <div class="nav-label">Memory</div>
+                </div>
+            </nav>
+
+            <div class="rail-spacer"></div>
+
+            <div class="privacy-indicator">
+                <div class="privacy-dot"></div>
+                <span>Local Mode</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Mode -->
+            <div class="mode-container active" data-mode="home">
+                <div class="home-canvas" id="home-canvas">
+                    <div class="ambient-bg"></div>
+                    <div class="home-content">
+                        <div class="intent-field-wrapper">
+                            <input type="text" class="intent-input" id="intent-input" placeholder="What would you like to explore?">
+                        </div>
+                        <p class="hint-text">Type a question, paste a link, or describe what you want to create</p>
+                    </div>
+                    <div class="home-actions">
+                        <button class="home-action-btn" title="Sessions">📚</button>
+                        <button class="home-action-btn" title="Memory">🧠</button>
+                        <button class="home-action-btn" title="Settings">⚙️</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Mode -->
+            <div class="mode-container research-mode" data-mode="research">
+                <div class="session-tiles" id="session-tiles">
+                    <div class="session-tile active">
+                        <span class="tile-icon">🔍</span>
+                        <span class="tile-title">Research Session</span>
+                        <button class="tile-close">×</button>
+                    </div>
+                    <button class="new-session-btn" id="new-session">+</button>
+                </div>
+                <div class="topbar">
+                    <div class="nav-controls">
+                        <button class="nav-btn">←</button>
+                        <button class="nav-btn">→</button>
+                        <button class="nav-btn">↻</button>
+                    </div>
+                    <div class="url-bar-wrapper">
+                        <input type="text" class="url-bar" id="url-bar" placeholder="Search or enter address...">
+                    </div>
+                    <div class="page-actions">
+                        <button class="nav-btn" title="Save">🔖</button>
+                        <button class="nav-btn" title="Export">📤</button>
+                    </div>
+                </div>
+                <div class="webview-container">
+                    <div class="webview-placeholder">
+                        <h3>🌐 Webpage Content</h3>
+                        <p>In the full desktop application, this area displays an actual Chromium webview.</p>
+                        <p style="margin-top: 16px; font-size: 14px;">Try entering a URL or search query above!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Write Mode -->
+            <div class="mode-container write-mode" data-mode="write">
+                <div class="write-toolbar">
+                    <input type="text" class="document-title" value="Untitled Document" id="doc-title">
+                    <div class="toolbar-actions">
+                        <div class="ai-assists">
+                            <button class="assist-btn">✨ Improve</button>
+                            <button class="assist-btn">✂️ Shorten</button>
+                            <button class="assist-btn">📝 Expand</button>
+                            <button class="assist-btn">🎯 Tone</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="write-editor-container">
+                    <div class="write-editor">
+                        <textarea class="editor-textarea" id="editor" placeholder="Begin writing..."></textarea>
+                        <div class="editor-stats">
+                            <span id="word-count">0 words</span>
+                            <span id="char-count">0 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Automate Mode -->
+            <div class="mode-container" data-mode="automate">
+                <div class="mode-placeholder">
+                    <h2>⚡ Automation Mode</h2>
+                    <p>Safe, transparent task automation with user confirmation at every step.</p>
+                    <p style="margin-top: 16px; font-size: 14px;">Coming soon in the full desktop release.</p>
+                </div>
+            </div>
+
+            <!-- Memory Mode -->
+            <div class="mode-container" data-mode="memory">
+                <div class="mode-placeholder">
+                    <h2>💭 Memory Mode</h2>
+                    <p>Browse and search your saved memories, sessions, and annotations.</p>
+                    <p style="margin-top: 16px; font-size: 14px;">All data encrypted locally with AES-256.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Context Assistant -->
+        <aside class="context-assistant">
+            <div class="assistant-header">
+                <h3 class="assistant-title">Context</h3>
+                <button class="assistant-close">×</button>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-action-btn">
+                    <span class="action-icon">📝</span>
+                    <span class="action-label">Summarize</span>
+                </button>
+                <button class="quick-action-btn">
+                    <span class="action-icon">🔍</span>
+                    <span class="action-label">Extract</span>
+                </button>
+                <button class="quick-action-btn">
+                    <span class="action-icon">⚖️</span>
+                    <span class="action-label">Compare</span>
+                </button>
+                <button class="quick-action-btn">
+                    <span class="action-icon">📚</span>
+                    <span class="action-label">Cite</span>
+                </button>
+            </div>
+
+            <div class="chat-area" id="chat-area">
+                <div class="chat-message assistant">
+                    <div class="message-content">
+                        👋 Hello! I'm your Elysium assistant. I can help you with:
+                        <ul style="margin: 8px 0 0 20px;">
+                            <li>Summarizing webpages</li>
+                            <li>Writing assistance</li>
+                            <li>Research and citations</li>
+                            <li>Task automation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Ask anything...">
+                <button class="send-btn" id="send-btn">➤</button>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // State management
+        let currentMode = 'home';
+        let sessions = [
+            { id: 1, title: 'Research Session', icon: '🔍', active: true }
+        ];
+
+        // DOM Elements
+        const navItems = document.querySelectorAll('.nav-item');
+        const modeContainers = document.querySelectorAll('.mode-container');
+        const intentInput = document.getElementById('intent-input');
+        const homeCanvas = document.getElementById('home-canvas');
+        const chatInput = document.getElementById('chat-input');
+        const chatArea = document.getElementById('chat-area');
+        const sendBtn = document.getElementById('send-btn');
+        const urlBar = document.getElementById('url-bar');
+        const editor = document.getElementById('editor');
+        const sessionTilesContainer = document.getElementById('session-tiles');
+        const newSessionBtn = document.getElementById('new-session');
+
+        // Mode switching
+        function switchMode(mode) {
+            currentMode = mode;
+
+            // Update nav
+            navItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.mode === mode);
+            });
+
+            // Update mode containers
+            modeContainers.forEach(container => {
+                container.classList.toggle('active', container.dataset.mode === mode);
+            });
+
+            // Add to chat
+            addMessage('system', `Switched to ${mode.charAt(0).toUpperCase() + mode.slice(1)} Mode`);
+        }
+
+        // Intent detection
+        function detectIntent(input) {
+            const lower = input.toLowerCase();
+
+            if (lower.includes('http') || lower.includes('www') || lower.includes('.com') || lower.includes('.org')) {
+                return 'research';
+            } else if (lower.includes('write') || lower.includes('draft') || lower.includes('compose')) {
+                return 'write';
+            } else if (lower.includes('automate') || lower.includes('book') || lower.includes('schedule')) {
+                return 'automate';
+            } else if (lower.includes('remember') || lower.includes('recall') || lower.includes('find')) {
+                return 'memory';
+            }
+
+            return 'research'; // Default to research for queries
+        }
+
+        // Chat functionality
+        function addMessage(type, content) {
+            const message = document.createElement('div');
+            message.className = `chat-message ${type}`;
+            message.innerHTML = `<div class="message-content">${content}</div>`;
+            chatArea.appendChild(message);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function handleChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage('user', text);
+            chatInput.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    `I understand you're asking about "${text}". In the full desktop app with AI integration, I would provide a detailed, context-aware response based on your current session and activity.`,
+                    `Great question! This demo showcases the Elysium interface. The production version connects to AI providers (OpenAI, Anthropic, or local models) for real-time assistance.`,
+                    `Regarding "${text}" - in the complete application, I would analyze your current context, search relevant information, and provide actionable insights with source citations.`,
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                addMessage('assistant', response);
+            }, 600);
+        }
+
+        // Session management
+        function renderSessions() {
+            const existingSessions = sessionTilesContainer.querySelectorAll('.session-tile');
+            existingSessions.forEach(tile => tile.remove());
+
+            sessions.forEach((session, index) => {
+                const tile = document.createElement('div');
+                tile.className = `session-tile ${session.active ? 'active' : ''}`;
+                tile.innerHTML = `
+                    <span class="tile-icon">${session.icon}</span>
+                    <span class="tile-title">${session.title}</span>
+                    <button class="tile-close">×</button>
+                `;
+
+                tile.querySelector('.tile-close').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sessions.splice(index, 1);
+                    renderSessions();
+                    addMessage('system', `Closed session: ${session.title}`);
+                });
+
+                sessionTilesContainer.insertBefore(tile, newSessionBtn);
+            });
+        }
+
+        // Event listeners
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                switchMode(item.dataset.mode);
+            });
+        });
+
+        intentInput.addEventListener('focus', () => {
+            homeCanvas.classList.add('focused');
+        });
+
+        intentInput.addEventListener('blur', () => {
+            homeCanvas.classList.remove('focused');
+        });
+
+        intentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const input = intentInput.value.trim();
+                if (!input) return;
+
+                const mode = detectIntent(input);
+                switchMode(mode);
+
+                if (mode === 'research') {
+                    urlBar.value = input;
+                }
+
+                addMessage('assistant', `Detected intent: ${input}`);
+                intentInput.value = '';
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleChat();
+        });
+
+        sendBtn.addEventListener('click', handleChat);
+
+        // Quick actions
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const label = btn.querySelector('.action-label').textContent;
+                addMessage('user', `${label} this content`);
+                setTimeout(() => {
+                    addMessage('assistant', `In the full application, I would ${label.toLowerCase()} the current page content and provide detailed results here.`);
+                }, 500);
+            });
+        });
+
+        // AI assist buttons
+        document.querySelectorAll('.assist-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.textContent.trim();
+                addMessage('assistant', `${action} - This would analyze your text and provide AI-powered suggestions in the production version.`);
+            });
+        });
+
+        // New session
+        newSessionBtn.addEventListener('click', () => {
+            const sessionNum = sessions.length + 1;
+            sessions.forEach(s => s.active = false);
+            sessions.push({
+                id: Date.now(),
+                title: `Session ${sessionNum}`,
+                icon: '🔍',
+                active: true
+            });
+            renderSessions();
+            addMessage('system', 'Created new session');
+        });
+
+        // Editor stats
+        editor.addEventListener('input', () => {
+            const text = editor.value;
+            const words = text.trim().split(/\s+/).filter(Boolean).length;
+            const chars = text.length;
+            document.getElementById('word-count').textContent = `${words} words`;
+            document.getElementById('char-count').textContent = `${chars} characters`;
+        });
+
+        // Initialize
+        renderSessions();
+        intentInput.focus();
+
+        // Welcome message
+        setTimeout(() => {
+            addMessage('assistant', 'Welcome to Elysium! Try typing in the intent field: "wikipedia.org" or "write an email" to see mode switching in action.');
+        }, 1000);
+    </script>
+</body>
+</html>
