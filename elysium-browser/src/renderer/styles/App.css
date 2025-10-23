@@ -1,0 +1,120 @@
+/* App Layout Styles */
+
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg-primary);
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Mode Placeholder */
+.mode-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-3xl);
+  text-align: center;
+}
+
+.mode-placeholder h2 {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.mode-placeholder p {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  max-width: 500px;
+}
+
+/* Custom Window Controls (for frameless window) */
+.window-controls {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  z-index: var(--z-modal);
+  -webkit-app-region: no-drag;
+}
+
+.window-control-btn {
+  width: 46px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.window-control-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-primary);
+}
+
+.window-control-btn.close:hover {
+  background: #FF3B30;
+  color: white;
+}
+
+/* Loading State */
+.app-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-primary);
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-divider);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Transitions */
+.mode-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.mode-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all var(--transition-slower);
+}
+
+.mode-exit {
+  opacity: 1;
+}
+
+.mode-exit-active {
+  opacity: 0;
+  transition: all var(--transition-base);
+}

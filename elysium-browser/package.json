@@ -1,0 +1,65 @@
+{
+  "name": "elysium-browser",
+  "version": "1.0.0",
+  "description": "The Browser That Isn't a Browser - An intent-first, AI-powered browser experience",
+  "main": "dist-electron/main.js",
+  "author": "Elysium Team",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "build:vite": "tsc && vite build",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "start": "electron .",
+    "preview": "vite preview",
+    "package": "npm run build:vite && npm run build:electron && electron-builder"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "framer-motion": "^10.16.4",
+    "zustand": "^4.4.6",
+    "marked": "^9.1.6",
+    "dompurify": "^3.0.6",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@types/node": "^20.9.0",
+    "@types/crypto-js": "^4.2.1",
+    "@types/dompurify": "^3.0.5",
+    "@vitejs/plugin-react": "^4.2.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vite-plugin-electron": "^0.14.1"
+  },
+  "build": {
+    "appId": "com.elysium.browser",
+    "productName": "Elysium",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "public/icon.icns",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "icon": "public/icon.ico",
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "icon": "public/icon.png",
+      "target": ["AppImage", "deb"]
+    }
+  }
+}

@@ -1,0 +1,130 @@
+/* Left Rail Styles */
+
+.left-rail {
+  position: relative;
+  height: 100%;
+  background: var(--color-nadoo);
+  border-right: 1px solid var(--color-divider);
+  overflow: hidden;
+  z-index: var(--z-sticky);
+}
+
+.left-rail-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg) 0;
+}
+
+/* Brand */
+.rail-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 0 var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.brand-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-primary);
+}
+
+.brand-name {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Navigation */
+.rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: 0 var(--space-md);
+}
+
+.rail-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.rail-nav-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-primary);
+}
+
+.rail-nav-item.active {
+  background: var(--color-bg-primary);
+  color: var(--color-accent);
+  box-shadow: var(--elevation-1);
+}
+
+.nav-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  overflow: hidden;
+}
+
+/* Spacer */
+.rail-spacer {
+  flex: 1;
+}
+
+/* Footer */
+.rail-footer {
+  padding: 0 var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.privacy-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.privacy-indicator svg {
+  animation: pulse 2s ease-in-out infinite;
+  color: #34C759;
+}
+
+.privacy-label {
+  white-space: nowrap;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,201 @@
+/* Research Mode Styles */
+
+.research-mode {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-bg-primary);
+}
+
+/* Top Bar */
+.research-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-nadoo-light);
+  backdrop-filter: var(--blur-lg);
+  border-bottom: 1px solid var(--color-divider);
+  z-index: var(--z-sticky);
+}
+
+.nav-controls {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.nav-btn:hover {
+  color: var(--color-text-primary);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.url-bar-form {
+  flex: 1;
+  max-width: 800px;
+}
+
+.url-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.url-bar:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.loading-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.url-icon {
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}
+
+.url-input {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.page-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.page-action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.page-action-btn:hover {
+  color: var(--color-text-primary);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Content */
+.research-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.webview-container {
+  width: 100%;
+  height: 100%;
+}
+
+.webview-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-tertiary);
+}
+
+.placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-3xl);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.placeholder-content h3 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+}
+
+.placeholder-content p {
+  max-width: 500px;
+  word-break: break-all;
+}
+
+.implementation-note {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  background: var(--color-nadoo);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  text-align: left;
+  max-width: 600px;
+}
+
+.implementation-note strong {
+  display: block;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-primary);
+}
+
+.implementation-note code {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-accent);
+}
+
+.research-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+}

@@ -1,0 +1,115 @@
+/* Session Tiles Styles */
+
+.session-tiles {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.tiles-container {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: var(--space-xs);
+  scrollbar-width: thin;
+}
+
+.tiles-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.session-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+  max-width: 200px;
+  position: relative;
+}
+
+.session-tile:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--elevation-2);
+  transform: translateY(-1px);
+}
+
+.session-tile.active {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent);
+  box-shadow: var(--elevation-2);
+}
+
+.tile-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.tile-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.tile-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tile-close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.session-tile:hover .tile-close {
+  opacity: 1;
+}
+
+.tile-close:hover {
+  color: var(--color-text-primary);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.new-session-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-primary);
+  border: 1px dashed var(--color-divider);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.new-session-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+}
