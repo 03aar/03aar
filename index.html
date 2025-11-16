@@ -2588,7 +2588,6 @@
 
         function init() {
             updateGreeting();
-            renderAll();
             setupEventListeners();
             updateAnalytics();
             setInterval(updateGreeting, 60000);
@@ -2603,11 +2602,13 @@
                     showOnboarding();
                 }, 500);
             } else {
-                // Add sample tasks if empty (for returning users)
-                if (state.tasks.length === 0) {
-                    SAMPLE_TASKS.slice(0, 3).forEach((title, i) => {
-                        addTask(title, i < 2);
-                    });
+                // Add sample tasks if empty (for returning users who cleared data)
+                if (state.tasks.length === 0 && state.clients.length > 0) {
+                    // Generate some sample tasks based on existing clients
+                    const client = state.clients[0].name;
+                    addTask('Review project requirements #urgent', true, client, 'inprogress');
+                    addTask('Design user interface mockups #design', false, client, 'todo');
+                    addTask('Setup development environment', false, null, 'backlog');
                 }
             }
 
@@ -2624,6 +2625,9 @@
                     scheduleReminder(task);
                 }
             });
+
+            // Force initial render to ensure everything is populated
+            renderAll();
         }
 
         // ===== STATE MANAGEMENT =====
