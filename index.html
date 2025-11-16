@@ -4058,25 +4058,52 @@ Mobile & Tablet Optimized:
 
         function setupOnboardingInteractions() {
             // Role card selection
-            document.querySelectorAll('.role-card').forEach(card => {
-                card.addEventListener('click', () => {
+            const roleCards = document.querySelectorAll('.role-card');
+            console.log('Setting up onboarding, found role cards:', roleCards.length);
+
+            roleCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Remove selection from all cards
                     document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+
+                    // Select this card
                     card.classList.add('selected');
                     selectedRole = card.dataset.role;
-                    document.getElementById('roleNextBtn').disabled = false;
+
+                    console.log('Role selected:', selectedRole);
+
+                    // Enable next button
+                    const nextBtn = document.getElementById('roleNextBtn');
+                    if (nextBtn) {
+                        nextBtn.disabled = false;
+                        console.log('Role next button enabled');
+                    } else {
+                        console.error('roleNextBtn not found!');
+                    }
                 });
             });
 
             // Goal selection
-            document.querySelectorAll('.goal-item').forEach(item => {
-                item.addEventListener('click', () => {
+            const goalItems = document.querySelectorAll('.goal-item');
+            console.log('Found goal items:', goalItems.length);
+
+            goalItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     item.classList.toggle('selected');
                     const goal = item.dataset.goal;
+
                     if (selectedGoals.includes(goal)) {
                         selectedGoals = selectedGoals.filter(g => g !== goal);
                     } else {
                         selectedGoals.push(goal);
                     }
+                    console.log('Selected goals:', selectedGoals);
                 });
             });
 
@@ -4092,43 +4119,172 @@ Mobile & Tablet Optimized:
         }
 
         function showOnboarding() {
-            document.getElementById('onboardingOverlay').classList.add('active');
+            console.log('showOnboarding called');
+
+            const overlay = document.getElementById('onboardingOverlay');
+            if (!overlay) {
+                console.error('Onboarding overlay not found');
+                return;
+            }
+
+            // Reset state
             currentOnboardingStep = 1;
             selectedRole = '';
             selectedGoals = [];
+
+            // Reset all steps to inactive
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step-${i}`);
+                if (step) {
+                    step.classList.remove('active');
+                }
+            }
+
+            // Activate first step
+            const firstStep = document.getElementById('step-1');
+            if (firstStep) {
+                firstStep.classList.add('active');
+            }
+
+            // Reset form inputs
+            const nameInput = document.getElementById('userName');
+            if (nameInput) {
+                nameInput.value = '';
+            }
+
+            // Reset role selection
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Reset goal selection
+            document.querySelectorAll('.goal-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            // Disable role next button
+            const roleNextBtn = document.getElementById('roleNextBtn');
+            if (roleNextBtn) {
+                roleNextBtn.disabled = true;
+            }
+
+            // Update progress
             updateOnboardingProgress();
+
+            // Show overlay
+            overlay.classList.add('active');
+
+            // Focus on name input
+            setTimeout(() => {
+                if (nameInput) {
+                    nameInput.focus();
+                }
+            }, 300);
+
+            console.log('Onboarding shown successfully');
         }
 
         function nextOnboardingStep() {
+            console.log('nextOnboardingStep called, current step:', currentOnboardingStep);
+
             // Validate current step
             if (currentOnboardingStep === 1) {
-                const name = document.getElementById('userName').value.trim();
+                const nameInput = document.getElementById('userName');
+                if (!nameInput) {
+                    console.error('Name input not found');
+                    return;
+                }
+                const name = nameInput.value.trim();
                 if (!name) {
-                    document.getElementById('userName').focus();
+                    nameInput.focus();
+                    alert('Please enter your name to continue');
                     return;
                 }
                 state.userProfile.name = name;
+                console.log('Name saved:', name);
             } else if (currentOnboardingStep === 2) {
                 if (!selectedRole) {
+                    alert('Please select what best describes you');
                     return;
                 }
                 state.userProfile.role = selectedRole;
+                console.log('Role saved:', selectedRole);
             } else if (currentOnboardingStep === 3) {
                 state.userProfile.goals = selectedGoals;
+                console.log('Goals saved:', selectedGoals);
+            }
+
+            // Don't go beyond step 4
+            if (currentOnboardingStep >= 4) {
+                console.error('Already at final step, use completeOnboarding() instead');
+                return;
             }
 
             // Move to next step
-            document.getElementById(`step-${currentOnboardingStep}`).classList.remove('active');
-            currentOnboardingStep++;
-            document.getElementById(`step-${currentOnboardingStep}`).classList.add('active');
+            const currentStep = document.getElementById(`step-${currentOnboardingStep}`);
+            const nextStepNum = currentOnboardingStep + 1;
+            const nextStep = document.getElementById(`step-${nextStepNum}`);
+
+            if (!currentStep) {
+                console.error(`Current step ${currentOnboardingStep} not found`);
+                return;
+            }
+
+            if (!nextStep) {
+                console.error(`Next step ${nextStepNum} not found`);
+                return;
+            }
+
+            console.log(`Moving from step ${currentOnboardingStep} to ${nextStepNum}`);
+
+            currentStep.classList.remove('active');
+            currentOnboardingStep = nextStepNum;
+            nextStep.classList.add('active');
             updateOnboardingProgress();
+
+            console.log('Step transition complete');
         }
 
         function prevOnboardingStep() {
-            document.getElementById(`step-${currentOnboardingStep}`).classList.remove('active');
-            currentOnboardingStep--;
-            document.getElementById(`step-${currentOnboardingStep}`).classList.add('active');
+            console.log('prevOnboardingStep called, current step:', currentOnboardingStep);
+
+            // Don't go below step 1
+            if (currentOnboardingStep <= 1) {
+                console.log('Already at first step');
+                return;
+            }
+
+            const currentStep = document.getElementById(`step-${currentOnboardingStep}`);
+            const prevStepNum = currentOnboardingStep - 1;
+            const prevStep = document.getElementById(`step-${prevStepNum}`);
+
+            if (!currentStep) {
+                console.error(`Current step ${currentOnboardingStep} not found`);
+                return;
+            }
+
+            if (!prevStep) {
+                console.error(`Previous step ${prevStepNum} not found`);
+                return;
+            }
+
+            console.log(`Moving from step ${currentOnboardingStep} to ${prevStepNum}`);
+
+            currentStep.classList.remove('active');
+            currentOnboardingStep = prevStepNum;
+            prevStep.classList.add('active');
             updateOnboardingProgress();
+
+            // Reset button states when going back
+            if (currentOnboardingStep === 2) {
+                // Reset role selection button if no role selected
+                const roleNextBtn = document.getElementById('roleNextBtn');
+                if (roleNextBtn && !selectedRole) {
+                    roleNextBtn.disabled = true;
+                }
+            }
+
+            console.log('Previous step transition complete');
         }
 
         function updateOnboardingProgress() {
@@ -4143,30 +4299,88 @@ Mobile & Tablet Optimized:
         }
 
         function completeOnboarding() {
+            console.log('completeOnboarding called');
+            console.log('User profile:', state.userProfile);
+            console.log('Selected role:', selectedRole);
+            console.log('Selected goals:', selectedGoals);
+
+            // Ensure we have all required data
+            if (!state.userProfile.name) {
+                console.error('No name set in profile');
+                alert('Please complete all onboarding steps');
+                return;
+            }
+
+            // Set completion flag
             state.userProfile.onboardingCompleted = true;
             state.userProfile.joinedDate = Date.now();
 
+            // Ensure role and goals are saved
+            if (selectedRole) {
+                state.userProfile.role = selectedRole;
+            }
+            if (selectedGoals.length > 0) {
+                state.userProfile.goals = selectedGoals;
+            }
+
+            console.log('Generating personalized data...');
+
             // Generate personalized sample data
-            generatePersonalizedData();
+            try {
+                generatePersonalizedData();
+                console.log('Personalized data generated successfully');
+            } catch (e) {
+                console.error('Error generating personalized data:', e);
+            }
 
             // Save profile
-            saveState();
+            try {
+                saveState();
+                console.log('State saved successfully');
+            } catch (e) {
+                console.error('Error saving state:', e);
+            }
 
             // Close onboarding
-            document.getElementById('onboardingOverlay').classList.remove('active');
+            const overlay = document.getElementById('onboardingOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+                console.log('Onboarding overlay closed');
+            } else {
+                console.error('Onboarding overlay not found');
+            }
 
             // Show confetti
-            if (typeof confetti !== 'undefined') {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
+            try {
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                    console.log('Confetti displayed');
+                }
+            } catch (e) {
+                console.error('Error showing confetti:', e);
             }
 
             // Update greeting with name
-            updateGreeting();
-            renderAll();
+            try {
+                updateGreeting();
+                console.log('Greeting updated');
+            } catch (e) {
+                console.error('Error updating greeting:', e);
+            }
+
+            // Render all views
+            try {
+                renderAll();
+                console.log('All views rendered');
+            } catch (e) {
+                console.error('Error rendering views:', e);
+            }
+
+            console.log('Onboarding completed successfully!');
         }
 
         function generatePersonalizedData() {
