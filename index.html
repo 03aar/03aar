@@ -2767,17 +2767,22 @@
         // ===== TASK OPERATIONS =====
 
         function addTask(title, isFocus = false, client = null, status = 'todo') {
+            if (!title || typeof title !== 'string') {
+                console.error('Invalid task title');
+                return null;
+            }
+
             const dueDate = parseDueDate(title);
             const cleanTitle = dueDate ? cleanTaskTitle(title) : title;
 
             const task = {
                 id: Date.now() + Math.random(),
-                title: cleanTitle,
+                title: cleanTitle.trim(),
                 emoji: getRandomEmoji(),
-                isFocus,
+                isFocus: Boolean(isFocus),
                 completed: false,
                 status: status || (isFocus ? 'inprogress' : 'todo'), // backlog, todo, inprogress, completed
-                client,
+                client: client || null,
                 tags: extractTags(cleanTitle),
                 notes: '',
                 createdAt: Date.now(),
@@ -2792,22 +2797,38 @@
             };
 
             state.tasks.push(task);
-            saveState();
+
+            try {
+                saveState();
+            } catch (e) {
+                console.error('Failed to save state after adding task:', e);
+            }
+
             renderAll();
 
             // Schedule reminder if due date exists
             if (dueDate && state.settings.emailReminders) {
-                scheduleReminder(task);
+                try {
+                    scheduleReminder(task);
+                } catch (e) {
+                    console.error('Failed to schedule reminder:', e);
+                }
             }
 
             // Confetti for first task
             if (state.tasks.length === 1 && typeof confetti !== 'undefined') {
-                confetti({
-                    particleCount: 50,
-                    spread: 60,
-                    origin: { y: 0.8 }
-                });
+                try {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.8 }
+                    });
+                } catch (e) {
+                    console.error('Confetti error:', e);
+                }
             }
+
+            return task;
         }
 
         // Email Reminder System (simulated - would need backend in production)
@@ -3649,37 +3670,57 @@ Board View Features:
 
         function renderBoard() {
             const container = document.getElementById('boardContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('Board container not found');
+                return;
+            }
 
-            container.innerHTML = '';
+            try {
+                container.innerHTML = '';
 
-            BOARD_COLUMNS.forEach(column => {
-                const tasks = state.tasks.filter(t => t.status === column.id);
+                if (!Array.isArray(state.tasks)) {
+                    console.error('state.tasks is not an array');
+                    state.tasks = [];
+                }
 
-                const columnDiv = document.createElement('div');
-                columnDiv.className = 'board-column';
-                columnDiv.dataset.status = column.id;
+                BOARD_COLUMNS.forEach(column => {
+                    const tasks = state.tasks.filter(t => t && t.status === column.id);
 
-                columnDiv.innerHTML = `
-                    <div class="board-column-header">
-                        <div class="board-column-title">${column.icon} ${column.title}</div>
-                        <div class="board-column-count">${tasks.length}</div>
-                    </div>
-                    <div class="board-cards" id="cards-${column.id}"></div>
-                `;
+                    const columnDiv = document.createElement('div');
+                    columnDiv.className = 'board-column';
+                    columnDiv.dataset.status = column.id;
 
-                container.appendChild(columnDiv);
+                    columnDiv.innerHTML = `
+                        <div class="board-column-header">
+                            <div class="board-column-title">${column.icon} ${column.title}</div>
+                            <div class="board-column-count">${tasks.length}</div>
+                        </div>
+                        <div class="board-cards" id="cards-${column.id}"></div>
+                    `;
 
-                // Render cards
-                const cardsContainer = columnDiv.querySelector('.board-cards');
-                tasks.forEach(task => {
-                    const card = createBoardCard(task);
-                    cardsContainer.appendChild(card);
+                    container.appendChild(columnDiv);
+
+                    // Render cards
+                    const cardsContainer = columnDiv.querySelector('.board-cards');
+                    if (cardsContainer) {
+                        tasks.forEach(task => {
+                            try {
+                                const card = createBoardCard(task);
+                                if (card) {
+                                    cardsContainer.appendChild(card);
+                                }
+                            } catch (e) {
+                                console.error('Error creating board card:', e, task);
+                            }
+                        });
+
+                        // Setup drop zone
+                        setupDropZone(cardsContainer, column.id);
+                    }
                 });
-
-                // Setup drop zone
-                setupDropZone(cardsContainer, column.id);
-            });
+            } catch (e) {
+                console.error('Error rendering board:', e);
+            }
         }
 
         function createBoardCard(task) {
