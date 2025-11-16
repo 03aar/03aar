@@ -1298,6 +1298,41 @@
                 width: 50px;
                 font-size: 12px;
             }
+
+            /* Mobile Board Optimizations */
+            .board-container {
+                gap: var(--space-sm);
+                padding: 0 var(--space-sm) var(--space-md) var(--space-sm);
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+            }
+
+            .board-column {
+                min-width: 85vw;
+                max-width: 85vw;
+                scroll-snap-align: start;
+            }
+
+            .board-card {
+                padding: var(--space-md);
+                font-size: 15px;
+            }
+
+            .board-card-title {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            .task-modal-content {
+                width: 95vw;
+                max-height: 95vh;
+                margin: var(--space-sm);
+            }
+
+            .onboarding-content {
+                width: 95%;
+                padding: var(--space-xl);
+            }
         }
 
         /* Tablet - Medium devices */
@@ -1321,6 +1356,27 @@
 
             .clients-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Tablet Board Optimizations */
+            .board-container {
+                gap: var(--space-md);
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+            }
+
+            .board-column {
+                min-width: 300px;
+                scroll-snap-align: start;
+            }
+
+            .board-card {
+                padding: var(--space-md);
+            }
+
+            .task-modal-content {
+                width: 90vw;
+                max-width: 700px;
             }
         }
 
@@ -3395,23 +3451,30 @@
             const shortcuts = `
 Keyboard Shortcuts:
 
-⌘K - Command Palette
-⌘N - New Task
-⌘F - Focus Mode
-⌘1 - Today View
-⌘2 - Board View (Kanban)
-⌘3 - All Tasks
-⌘4 - Clients
-⌘5 - Analytics
-Esc - Close Overlays
-
-All shortcuts work with Ctrl on Windows/Linux.
+Mac         Windows/Linux
+⌘K          Ctrl+K         Command Palette
+⌘N          Ctrl+N         New Task
+⌘F          Ctrl+F         Focus Mode
+⌘1          Ctrl+1         Today View
+⌘2          Ctrl+2         Board View (Kanban)
+⌘3          Ctrl+3         All Tasks
+⌘4          Ctrl+4         Clients
+⌘5          Ctrl+5         Analytics
+Esc         Esc            Close Overlays
 
 Board View Features:
-- Drag & drop tasks between columns
-- Click any card to view details
-- Add subtasks & checklists
-- Set priorities & estimates
+- Drag & drop tasks between columns (Desktop)
+- Tap & hold to drag on mobile/tablet
+- Click/tap any card to view details
+- Add subtasks, notes & checklists
+- Set priorities & time estimates
+- Natural language dates ("tomorrow", "friday")
+
+Mobile & Tablet Optimized:
+✓ Swipe horizontally through board columns
+✓ Touch-friendly 44px minimum tap targets
+✓ Responsive layout for all screen sizes
+✓ Works perfectly on phones and tablets
             `.trim();
 
             alert(shortcuts);
